@@ -1,0 +1,7 @@
+// Development flavor configuration
+#include "Generated.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER = com.example.talktojesus.dev
+PRODUCT_NAME = Talk to Jesus Dev
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+FLUTTER_TARGET = lib/main_dev.dart

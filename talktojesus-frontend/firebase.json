@@ -1,0 +1,31 @@
+{
+  "flutter": {
+    "platforms": {
+      "ios": {
+        "default": {
+          "projectId": "talk-to-je",
+          "appId": "1:982885317118:ios:ddd8a8796a3c365010a8af",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "talk-to-je",
+          "appId": "1:982885317118:ios:ddd8a8796a3c365010a8af",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "talk-to-je",
+          "configurations": {
+            "ios": "1:982885317118:ios:ddd8a8796a3c365010a8af",
+            "macos": "1:982885317118:ios:ddd8a8796a3c365010a8af"
+          }
+        }
+      }
+    }
+  }
+}

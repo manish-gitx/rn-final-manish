@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "70363574683",
+    "project_id": "talk-to-jesus-4fae7",
+    "storage_bucket": "talk-to-jesus-4fae7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70363574683:android:2606dca1d7c93db656f13e",
+        "android_client_info": {
+          "package_name": "com.example.talktojesus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70363574683-2nrsdqf2v2q210nlcfa3f3qvkil53j7s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.talktojesus",
+            "certificate_hash": "01ab34de2f3426e42466bb5c125b3661330d40ab"
+          }
+        },
+        {
+          "client_id": "70363574683-4koltd49rudt3ln2bs1di7caibl1fblo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYusHUaQ_2D2QpycUaxflOSFlebfPZajU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70363574683-4koltd49rudt3ln2bs1di7caibl1fblo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "70363574683-7ir7i7um0p639hmafe8ffo1q6aqkarku.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.talktojesus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
