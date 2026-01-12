@@ -1,0 +1,395 @@
+# Talk to Jesus
+
+> A spiritual companion mobile application that allows users to have meaningful conversations with an AI-powered Jesus, listen to spiritual music, and access premium features through subscription plans.
+
+---
+
+## 📋 Table of Contents
+
+- [Problem Statement](#-problem-statement)
+- [Tech Stack](#-tech-stack)
+- [Features Implemented](#-features-implemented)
+- [How to Run Locally](#-how-to-run-locally)
+- [API Documentation](#-api-documentation)
+- [Project Structure](#-project-structure)
+- [License](#-license)
+
+---
+
+## 🎯 Problem Statement
+
+In today's fast-paced world, many people seek spiritual guidance and connection but face barriers such as:
+
+- **Limited Access**: Not everyone has immediate access to spiritual counselors or religious communities
+- **Time Constraints**: Busy schedules make it difficult to attend regular spiritual sessions
+- **Privacy Concerns**: Some individuals prefer private spiritual conversations
+- **24/7 Availability**: Need for spiritual guidance at any time of day or night
+
+**Solution**: Talk to Jesus provides an accessible, always-available spiritual companion that offers:
+- Real-time AI-powered conversations with empathetic responses
+- Voice-based interactions for a more personal experience
+- Curated spiritual music and content
+- Flexible subscription plans for enhanced features
+- Privacy and confidentiality in spiritual discussions
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend (Mobile App)
+- **Framework**: Flutter (Dart)
+- **State Management**: Riverpod
+- **Authentication**: Firebase Auth, Google Sign-In
+- **Database**: Cloud Firestore, SQLite (local storage)
+- **UI/UX**: 
+  - Material Design
+  - Custom animations (Lottie)
+  - Google Fonts
+  - Shimmer effects
+- **Audio**: 
+  - Audioplayers (music playback)
+  - Record (voice recording)
+  - Permission Handler
+- **Payment**: Razorpay Flutter
+- **Analytics & Monitoring**: 
+  - PostHog (product analytics)
+  - Sentry (error tracking)
+- **Other**: 
+  - HTTP (API calls)
+  - Connectivity Plus (network status)
+  - In-App Review
+
+### Backend (API Server)
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Language**: TypeScript
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: 
+  - Google OAuth (google-auth-library)
+  - JWT (jsonwebtoken)
+- **AI Services**:
+  - OpenAI API (GPT for conversations)
+  - ElevenLabs API (text-to-speech)
+  - Speech-to-Text service
+- **Payment Processing**: Razorpay
+- **File Handling**: Multer, Form-Data
+- **Logging**: Winston
+- **Validation**: Zod
+- **Other**: Axios, CORS, dotenv
+
+### Infrastructure & Tools
+- **Version Control**: Git & GitHub
+- **Database**: Supabase (PostgreSQL)
+- **Cloud Services**: Firebase
+- **Payment Gateway**: Razorpay
+- **AI APIs**: OpenAI, ElevenLabs
+
+---
+
+## ✨ Features Implemented
+
+### 🔐 Authentication & User Management
+- Google OAuth 2.0 integration
+- JWT-based session management
+- User profile management
+- Last login tracking
+- Secure token-based authentication
+
+### 💬 Conversation Features
+- AI-powered conversations with contextual responses
+- Voice input support (speech-to-text)
+- Voice output support (text-to-speech using ElevenLabs)
+- Conversation history tracking
+- Real-time message processing
+
+### 🎵 Music & Spiritual Content
+- Curated spiritual songs library
+- Audio player with play/pause controls
+- Music streaming functionality
+- Song search and filtering
+- Pagination support
+
+### 💳 Subscription & Payments
+- Multiple subscription plans (Free, Basic, Premium)
+- Razorpay payment gateway integration
+- Subscription status tracking
+- Auto-renewal support
+- Payment webhooks for real-time updates
+- Transaction history
+
+### 📱 Mobile App Features
+- Beautiful, intuitive UI with custom animations
+- Offline support with local database caching
+- Network connectivity monitoring
+- Error tracking and crash reporting (Sentry)
+- Product analytics (PostHog)
+- In-app review prompts
+- Cross-platform support (Android & iOS)
+
+### 🔒 Security Features
+- Protected API routes with JWT middleware
+- Secure webhook verification
+- Environment-based configuration
+- Token validation and expiry handling
+
+---
+
+## 🚀 How to Run Locally
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+- **Node.js** (v18 or higher)
+- **npm** or **yarn**
+- **Flutter SDK** (v3.0 or higher)
+- **Android Studio** (for Android development)
+- **Xcode** (for iOS development, macOS only)
+- **Git**
+
+### Backend Setup
+
+1. **Navigate to the backend directory**:
+   ```bash
+   cd TalkToJesus-backend
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Create environment file**:
+   Create a `.env` file in the backend root with the following variables:
+   ```env
+   # Server Configuration
+   PORT=3000
+   NODE_ENV=development
+
+   # Supabase Configuration
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+   # JWT Configuration
+   JWT_SECRET=your_jwt_secret_key
+
+   # Google OAuth
+   GOOGLE_CLIENT_ID=your_google_client_id
+
+   # OpenAI API
+   OPENAI_API_KEY=your_openai_api_key
+
+   # ElevenLabs API
+   ELEVENLABS_API_KEY=your_elevenlabs_api_key
+
+   # Razorpay Configuration
+   RAZORPAY_KEY_ID=your_razorpay_key_id
+   RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+   RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
+   ```
+
+4. **Set up the database**:
+   ```bash
+   # Run the SQL setup script in your Supabase dashboard
+   # File location: TalkToJesus-backend/supabase-setup.sql
+   ```
+
+5. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+   The backend will run on `http://localhost:3000`
+
+6. **For production build**:
+   ```bash
+   npm run build
+   npm start
+   ```
+
+### Frontend Setup
+
+1. **Navigate to the frontend directory**:
+   ```bash
+   cd talktojesus-frontend
+   ```
+
+2. **Install Flutter dependencies**:
+   ```bash
+   flutter pub get
+   ```
+
+3. **Configure Firebase**:
+   - Download `google-services.json` for Android and place it in `android/app/`
+   - Download `GoogleService-Info.plist` for iOS and place it in `ios/Runner/`
+   - Update `lib/firebase_options.dart` with your Firebase configuration
+
+4. **Update API configuration**:
+   - Update the backend API URL in your app configuration
+   - Ensure all API endpoints point to your backend server
+
+5. **Run the app**:
+   
+   **For Android**:
+   ```bash
+   flutter run
+   # Or specify device
+   flutter run -d android
+   ```
+
+   **For iOS** (macOS only):
+   ```bash
+   flutter run -d ios
+   ```
+
+6. **Build for production**:
+   
+   **Android APK**:
+   ```bash
+   flutter build apk --release
+   ```
+
+   **Android App Bundle**:
+   ```bash
+   flutter build appbundle --release
+   ```
+
+   **iOS**:
+   ```bash
+   flutter build ios --release
+   ```
+
+### Environment Configuration
+
+#### Backend Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `PORT` | Server port number | Yes |
+| `SUPABASE_URL` | Supabase project URL | Yes |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | Yes |
+| `JWT_SECRET` | Secret key for JWT signing | Yes |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID | Yes |
+| `OPENAI_API_KEY` | OpenAI API key for conversations | Yes |
+| `ELEVENLABS_API_KEY` | ElevenLabs API key for TTS | Yes |
+| `RAZORPAY_KEY_ID` | Razorpay key ID | Yes |
+| `RAZORPAY_KEY_SECRET` | Razorpay secret key | Yes |
+| `RAZORPAY_WEBHOOK_SECRET` | Razorpay webhook secret | Yes |
+
+#### Frontend Configuration
+
+- Configure Firebase through `google-services.json` and `GoogleService-Info.plist`
+- Update API endpoints in the app configuration
+- Configure Sentry DSN for error tracking (optional)
+- Configure PostHog API key for analytics (optional)
+
+### Testing the Application
+
+1. **Start the backend server** (ensure it's running on `http://localhost:3000`)
+
+2. **Launch the mobile app** on an emulator or physical device
+
+3. **Test the flow**:
+   - Sign in with Google
+   - Start a conversation
+   - Try voice recording
+   - Browse songs and play music
+   - Test subscription flow (use Razorpay test mode)
+
+---
+
+## 📚 API Documentation
+
+For detailed API documentation including all endpoints, request/response formats, and examples, please refer to:
+
+**[Backend API Documentation →](./TalkToJesus-backend/README.md)**
+
+### Quick API Overview
+
+The backend provides the following API groups:
+
+- **Authentication**: User signup/signin with Google OAuth
+- **User Management**: Profile information and user data
+- **Conversations**: AI-powered chat with voice support
+- **Songs**: Spiritual music library management
+- **Plans**: Subscription plan information
+- **Subscriptions**: User subscription management
+- **Payments**: Payment processing with Razorpay
+- **Webhooks**: Payment status updates
+
+All authenticated endpoints require a JWT token in the Authorization header:
+```
+Authorization: Bearer <jwt_token>
+```
+
+Base URL (local): `http://localhost:3000/api`
+
+---
+
+## 📁 Project Structure
+
+```
+rn-final-manish/
+├── TalkToJesus-backend/          # Backend API (Node.js/Express)
+│   ├── src/
+│   │   ├── api/
+│   │   │   ├── controllers/      # Request handlers
+│   │   │   ├── middlewares/      # Auth & validation
+│   │   │   ├── routes/           # API routes
+│   │   │   └── services/         # Business logic
+│   │   ├── config/               # Configuration files
+│   │   ├── models/               # Data models
+│   │   ├── utils/                # Utility functions
+│   │   └── index.ts              # Server entry point
+│   ├── logs/                     # Application logs
+│   ├── package.json              # Dependencies
+│   ├── tsconfig.json             # TypeScript config
+│   ├── supabase-setup.sql        # Database schema
+│   └── README.md                 # Backend documentation
+│
+└── talktojesus-frontend/         # Frontend (Flutter)
+    ├── lib/
+    │   ├── core/                 # Core utilities & constants
+    │   ├── data/                 # Data layer (repositories, APIs)
+    │   ├── domain/               # Business logic & models
+    │   ├── presentation/         # UI screens & widgets
+    │   ├── firebase_options.dart # Firebase configuration
+    │   └── main.dart             # App entry point
+    ├── android/                  # Android-specific files
+    ├── ios/                      # iOS-specific files
+    ├── assets/                   # Images, music, animations
+    │   ├── images/
+    │   ├── music/
+    │   ├── svg/
+    │   └── lottie/
+    ├── pubspec.yaml              # Flutter dependencies
+    └── README.md                 # Frontend documentation
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+## 📄 License
+
+This project is licensed under the ISC License.
+
+---
+
+## 👨‍💻 Developer
+
+**Manish**  
+GitHub: [@manish-gitx](https://github.com/manish-gitx)
+
+---
+
+## 📞 Support
+
+For any queries or issues, please open an issue in the GitHub repository.
+
+---
+
+**Made with ❤️ for spiritual seekers everywhere**
+
