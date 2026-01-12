@@ -291,8 +291,13 @@ class _JesusPageState extends ConsumerState<JesusPage> with RouteAware {
         return;
       }
 
-      // Send to API
-      final response = await _conversationService.sendVoiceMessage(audioFile);
+      // Send to API with current language
+      final currentLanguage = ref.read(appStateProvider).currentLanguage;
+      final languageCode = currentLanguage == AppLanguage.english ? 'en' : 'te';
+      final response = await _conversationService.sendVoiceMessage(
+        audioFile,
+        language: languageCode,
+      );
 
       if (!response.isSuccess || response.data == null) {
         if (mounted) {
@@ -432,6 +437,7 @@ class _JesusPageState extends ConsumerState<JesusPage> with RouteAware {
                   onCancelRecording: _handleCancelRecording,
                   isRecording: _isRecording,
                   isProcessing: _isProcessing,
+                  currentLanguage: ref.watch(appStateProvider).currentLanguage,
                 ),
               ],
             ),

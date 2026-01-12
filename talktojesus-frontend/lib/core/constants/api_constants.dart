@@ -1,6 +1,6 @@
 class ApiConstants {
   static const String baseUrl =
-      'https://dfa3f11f3355.ngrok-free.app';
+      'https://e55e415bafa5.ngrok-free.app';
 
   // Auth endpoints
   static const String createOrGetUser = '/api/auth/create-or-get-user';

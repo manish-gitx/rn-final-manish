@@ -304,9 +304,12 @@ class ApiClient {
     }
   }
 
-  Future<ApiResponse<ConversationResponse>> sendMessage(File audioFile) async {
+  Future<ApiResponse<ConversationResponse>> sendMessage(
+    File audioFile, {
+    String language = 'en',
+  }) async {
     try {
-      debugPrint('[ApiClient] Sending voice message...');
+      debugPrint('[ApiClient] Sending voice message with language: $language');
 
       final url = Uri.parse(ApiConstants.getUrl(ApiConstants.sendMessage));
 
@@ -327,6 +330,9 @@ class ApiClient {
         filename: audioFile.path.split('/').last,
       );
       request.files.add(audioMultipartFile);
+
+      // Add language field
+      request.fields['language'] = language;
 
       debugPrint('[ApiClient] Sending audio file: ${audioFile.path}');
 

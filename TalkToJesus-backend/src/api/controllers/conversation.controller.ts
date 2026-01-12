@@ -11,6 +11,7 @@ export const sendMessageHandler = async (req: AuthenticatedRequest, res: Respons
     try {
         const user = req.user;
         const audioFile = req.file;
+        const language = req.body.language || 'en'; // Default to English if not provided
 
         if (!user) {
             return res.status(401).json({ message: 'Unauthorized' });
@@ -32,7 +33,7 @@ export const sendMessageHandler = async (req: AuthenticatedRequest, res: Respons
             });
         }
 
-        logger.info('Transcribing audio...', { userId: user.id, filename: audioFile.originalname });
+        logger.info('Transcribing audio...', { userId: user.id, filename: audioFile.originalname, language });
         
         let transcribedText: string;
         try {
@@ -53,9 +54,9 @@ export const sendMessageHandler = async (req: AuthenticatedRequest, res: Respons
         }
         logger.info('Audio transcribed successfully', { userId: user.id, text: transcribedText });
 
-        const systemPrompt = getSystemPrompt();
+        const systemPrompt = getSystemPrompt(language);
 
-        logger.info('Getting AI response...', { userId: user.id });
+        logger.info('Getting AI response...', { userId: user.id, language });
         const aiResponse = await callOpenAI(transcribedText, systemPrompt);
         logger.info('AI response received', { userId: user.id, response: aiResponse });
 

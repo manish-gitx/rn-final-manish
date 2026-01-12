@@ -171,10 +171,11 @@ class ConversationService {
 
   /// Send voice message to API
   Future<ApiResponse<ConversationResponse>> sendVoiceMessage(
-    File audioFile,
-  ) async {
+    File audioFile, {
+    String language = 'en',
+  }) async {
     try {
-      debugPrint('[ConversationService] Sending voice message...');
+      debugPrint('[ConversationService] Sending voice message with language: $language');
 
       // Verify file exists and has content
       if (!await audioFile.exists()) {
@@ -194,8 +195,8 @@ class ConversationService {
 
       debugPrint('[ConversationService] Audio file size: $fileSize bytes');
 
-      // Send to API
-      final response = await _apiClient.sendMessage(audioFile);
+      // Send to API with language
+      final response = await _apiClient.sendMessage(audioFile, language: language);
 
       // Clean up the temporary file after sending
       try {

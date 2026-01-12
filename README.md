@@ -45,6 +45,7 @@ Talk to Jesus bridges this gap by transforming passive scripture reading into **
 🌍 **Always Available**: 24/7 spiritual guidance without appointments or waiting  
 🔒 **Private & Judgment-Free**: Share your deepest concerns in complete confidentiality  
 💬 **Context-Aware**: Personalized responses based on your specific situation and questions  
+🌐 **Multi-Language Support**: Full support for English and Telugu languages  
 🎵 **Holistic Experience**: Combines spiritual conversations with curated worship music
 
 ### The Impact
@@ -62,9 +63,10 @@ If basic Bible apps can reach millions, an **intelligent, conversational spiritu
 
 ### Frontend (Mobile App)
 - **Framework**: Flutter (Dart)
-- **State Management**: Riverpod
+- **State Management**: Riverpod (with app-wide language state management)
 - **Authentication**: Firebase Auth, Google Sign-In
 - **Database**: Cloud Firestore, SQLite (local storage)
+- **Internationalization**: Multi-language support (English & Telugu)
 - **UI/UX**: 
   - Material Design
   - Custom animations (Lottie)
@@ -92,9 +94,9 @@ If basic Bible apps can reach millions, an **intelligent, conversational spiritu
   - Google OAuth (google-auth-library)
   - JWT (jsonwebtoken)
 - **AI Services**:
-  - OpenAI API (GPT for conversations)
-  - ElevenLabs API (text-to-speech)
-  - Speech-to-Text service
+  - OpenAI API (GPT for conversations with multi-language support)
+  - ElevenLabs API (text-to-speech with language-specific emotional tags)
+  - Speech-to-Text service (auto-detect language)
 - **Payment Processing**: Razorpay
 - **File Handling**: Multer, Form-Data
 - **Logging**: Winston
@@ -125,6 +127,18 @@ If basic Bible apps can reach millions, an **intelligent, conversational spiritu
 - Voice output support (text-to-speech using ElevenLabs)
 - Conversation history tracking
 - Real-time message processing
+- Multi-language conversation support (English & Telugu)
+
+### 🌐 Multi-Language Support
+- **Bilingual Interface**: Seamless switching between English and Telugu
+- **Language-Aware UI**: All UI elements update dynamically based on selected language
+- **Intelligent AI Responses**: AI automatically responds in the user's selected language
+- **Language-Specific Prompts**: Custom system prompts optimized for each language
+- **Cultural Context**: Language-appropriate emotional expressions and addressing (e.g., "My child" in English, "నా బిడ్డ" in Telugu)
+- **TTS Optimization**: Emotional tags and speech patterns tailored for each language
+- **Supported Languages**:
+  - 🇬🇧 **English**: Full feature support with native expressions
+  - 🇮🇳 **Telugu**: Complete Telugu language support with culturally appropriate responses
 
 ### 🎵 Music & Spiritual Content
 - Curated spiritual songs library
@@ -143,6 +157,7 @@ If basic Bible apps can reach millions, an **intelligent, conversational spiritu
 
 ### 📱 Mobile App Features
 - Beautiful, intuitive UI with custom animations
+- Multi-language support (English & Telugu)
 - Offline support with local database caching
 - Network connectivity monitoring
 - Error tracking and crash reporting (Sentry)
@@ -313,8 +328,10 @@ Before you begin, ensure you have the following installed:
 
 3. **Test the flow**:
    - Sign in with Google
-   - Start a conversation
-   - Try voice recording
+   - Toggle between English and Telugu languages
+   - Start a conversation in English mode
+   - Switch to Telugu and start another conversation
+   - Try voice recording in both languages
    - Browse songs and play music
    - Test subscription flow (use Razorpay test mode)
 

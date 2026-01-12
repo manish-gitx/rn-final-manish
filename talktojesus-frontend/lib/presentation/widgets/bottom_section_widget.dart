@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/text_styles.dart';
+import '../../core/constants/app_strings.dart';
+import '../../core/enums/app_language.dart';
 import 'navigation_button.dart';
 import 'inspirational_message_widget.dart';
 
@@ -16,6 +18,7 @@ class BottomSectionWidget extends StatelessWidget {
   final VoidCallback? onCancelRecording;
   final bool isRecording;
   final bool isProcessing;
+  final AppLanguage currentLanguage;
 
   const BottomSectionWidget({
     super.key,
@@ -28,6 +31,7 @@ class BottomSectionWidget extends StatelessWidget {
     this.onCancelRecording,
     this.isRecording = false,
     this.isProcessing = false,
+    this.currentLanguage = AppLanguage.english,
   });
 
   @override
@@ -86,7 +90,7 @@ class BottomSectionWidget extends StatelessWidget {
         // ),
         // const SizedBox(width: 8),
         NavigationButton(
-          label: 'Bible',
+          label: AppStrings.get('bible', currentLanguage),
           iconPath: 'assets/svg/bible.svg',
           backgroundColor: AppColors.bibleBackground,
           onTap: onBibleTap,
@@ -155,7 +159,7 @@ class BottomSectionWidget extends StatelessWidget {
                   child: Opacity(
                     opacity: isVoiceEnabled ? 0.80 : 0.40,
                     child: Text(
-                      'యేసుతో మాట్లాడండి',
+                      AppStrings.get('talk_to_jesus', currentLanguage),
                       style: AppTextStyles.placeholderText.copyWith(
                         color: Colors.white.withValues(
                           alpha: isVoiceEnabled ? 0.8 : 0.4,
@@ -248,7 +252,7 @@ class BottomSectionWidget extends StatelessWidget {
                     Opacity(
                       opacity: 0.80,
                       child: Text(
-                        'Recording...',
+                        AppStrings.get('recording', currentLanguage),
                         style: AppTextStyles.placeholderText.copyWith(
                           color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 15,
@@ -329,7 +333,7 @@ class BottomSectionWidget extends StatelessWidget {
                 child: Opacity(
                   opacity: 0.80,
                   child: Text(
-                    'నీ హృదయాన్ని వినిపిస్తున్నావు',
+                    AppStrings.get('listening_to_your_heart', currentLanguage),
                     style: AppTextStyles.placeholderText.copyWith(
                       color: Colors.white.withValues(alpha: 0.8),
                       fontSize: 14,
