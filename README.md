@@ -6,6 +6,7 @@
 
 ## 📋 Table of Contents
 
+- [Demo Video](#-demo-video)
 - [Problem Statement](#-problem-statement)
 - [Tech Stack](#-tech-stack)
 - [Features Implemented](#-features-implemented)
@@ -13,6 +14,24 @@
 - [API Documentation](#-api-documentation)
 - [Project Structure](#-project-structure)
 - [License](#-license)
+
+---
+
+## 🎥 Demo Video
+
+Watch the **Talk to Jesus** app in action:
+
+[![Demo Video](https://img.shields.io/badge/▶️_Watch_Demo-Google_Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1zEaOE2A78sAy2iPQp8LM1efWzoOa5GCm/view?usp=sharing)
+
+**[📺 Click here to watch the full demo video →](https://drive.google.com/file/d/1zEaOE2A78sAy2iPQp8LM1efWzoOa5GCm/view?usp=sharing)**
+
+The video demonstrates:
+- 📱 Complete user experience across all features
+- 🔐 Google OAuth authentication flow
+- 💬 Real-time AI conversations with voice input/output
+- 🌐 Multi-language support (English & Telugu)
+- 💳 Subscription and payment integration
+
 
 ---
 
