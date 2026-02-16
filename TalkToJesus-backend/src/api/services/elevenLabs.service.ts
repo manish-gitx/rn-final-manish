@@ -88,7 +88,16 @@ export const generateSpeech = async (text: string): Promise<string | null> => {
         return `data:audio/mpeg;base64,${audioBase64}`;
 
     } catch (error: any) {
-        logger.error('Error generating speech:', error.message);
+        const responseData = error.response?.data
+            ? Buffer.isBuffer(error.response.data)
+                ? error.response.data.toString('utf-8')
+                : JSON.stringify(error.response.data)
+            : 'No response data';
+        logger.error('Error generating speech:', {
+            message: error.message,
+            status: error.response?.status,
+            responseData,
+        });
         return null;
     }
 };

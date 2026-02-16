@@ -41,7 +41,9 @@ export const hasActiveSubscription = async (userId: string): Promise<boolean> =>
             .from('subscriptions')
             .select('*')
             .eq('user_id', userId)
-            .eq('status', 'active')
+            .in('status', ['active', 'authenticated'])
+            .order('created_at', { ascending: false })
+            .limit(1)
             .single();
 
         if (subError || !subscription) {
@@ -51,9 +53,22 @@ export const hasActiveSubscription = async (userId: string): Promise<boolean> =>
 
         // Check if subscription has been charged recently
         if (!subscription.last_charged_at) {
-            logger.info('Subscription exists but never charged', { 
-                user_id: userId, 
-                subscription_id: subscription.id 
+            // Grace period: if subscription was created within the last 24 hours,
+            // the user just paid but the charged webhook hasn't arrived yet
+            const createdAt = new Date(subscription.created_at);
+            const oneDayAgo = new Date();
+            oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+            if (createdAt >= oneDayAgo) {
+                logger.info('Subscription within new-purchase grace period', {
+                    user_id: userId,
+                    subscription_id: subscription.id,
+                    created_at: subscription.created_at
+                });
+                return true;
+            }
+            logger.info('Subscription exists but never charged and grace period expired', {
+                user_id: userId,
+                subscription_id: subscription.id
             });
             return false;
         }

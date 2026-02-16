@@ -107,6 +107,14 @@ const handleSubscriptionWebhook = async (event: string, payload: any) => {
 
             case 'subscription.activated':
                 logger.info('Subscription activated', { subscription_id: subscriptionId });
+                // Set last_charged_at as fallback if it wasn't set by authenticated/charged events
+                if (subscription.current_start && !dbSubscription.last_charged_at) {
+                    updateData.last_charged_at = subscription.current_start;
+                    logger.info('Setting last_charged_at from activated event', {
+                        subscription_id: subscriptionId,
+                        last_charged_at: subscription.current_start
+                    });
+                }
                 break;
 
             case 'subscription.pending':
