@@ -10,8 +10,8 @@ const GRACE_PERIOD_DAYS = 1; // 1 day grace period after subscription period end
 /**
  * Check if user has active subscription for current month
  * Returns true if:
- * 1. User has conversation_count <= 3 (free tier)
- * 2. User has active subscription with valid last_charged_at within grace period
+ * 1. User has conversation_count < 3 (free tier: 3 free conversations)
+ * 2. User has active/authenticated/created subscription with valid access period
  */
 export const hasActiveSubscription = async (userId: string): Promise<boolean> => {
     try {
@@ -27,7 +27,7 @@ export const hasActiveSubscription = async (userId: string): Promise<boolean> =>
             return false;
         }
 
-        // Free tier: allow if conversation_count <= 3
+        // Free tier: allow if conversation_count < FREE_CONVERSATION_LIMIT (0, 1, 2 = 3 free conversations)
         if (user.conversation_count < FREE_CONVERSATION_LIMIT) {
             logger.info('User within free tier limit', { 
                 user_id: userId, 
@@ -37,24 +37,50 @@ export const hasActiveSubscription = async (userId: string): Promise<boolean> =>
         }
 
         // If user has exceeded free tier, check for active subscription
-        const { data: subscription, error: subError } = await supabase
+        // Prioritize 'active' subscriptions first, then fall back to 'authenticated'/'created'
+        const { data: subscriptions, error: subError } = await supabase
             .from('subscriptions')
             .select('*')
             .eq('user_id', userId)
-            .in('status', ['active', 'authenticated'])
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .single();
+            .in('status', ['active', 'authenticated', 'created'])
+            .order('created_at', { ascending: false });
 
-        if (subError || !subscription) {
+        if (subError || !subscriptions || subscriptions.length === 0) {
             logger.info('No active subscription found', { user_id: userId });
             return false;
         }
 
-        // Check if subscription has been charged recently
-        if (!subscription.last_charged_at) {
-            // Grace period: if subscription was created within the last 24 hours,
-            // the user just paid but the charged webhook hasn't arrived yet
+        // Pick the best subscription: prefer 'active' > 'authenticated' > 'created'
+        const statusPriority: Record<string, number> = { active: 0, authenticated: 1, created: 2 };
+        const subscription = subscriptions.sort(
+            (a, b) => (statusPriority[a.status] ?? 99) - (statusPriority[b.status] ?? 99)
+        )[0];
+
+        // If Razorpay says the subscription is 'active', trust it.
+        // Razorpay automatically moves subscriptions to 'pending' or 'halted'
+        // when payments fail, so 'active' means the user is paid up.
+        if (subscription.status === 'active') {
+            logger.info('User has active subscription (Razorpay status: active)', {
+                user_id: userId,
+                subscription_id: subscription.id,
+                last_charged_at: subscription.last_charged_at,
+            });
+            return true;
+        }
+
+        // For 'authenticated' status: subscription was just authenticated (first payment made)
+        // Grant access — this is a valid paid state
+        if (subscription.status === 'authenticated') {
+            logger.info('User has authenticated subscription', {
+                user_id: userId,
+                subscription_id: subscription.id,
+            });
+            return true;
+        }
+
+        // For 'created' status: subscription was just created, payment may be in progress
+        // Grant a 24-hour grace period for webhook to arrive
+        if (subscription.status === 'created') {
             const createdAt = new Date(subscription.created_at);
             const oneDayAgo = new Date();
             oneDayAgo.setDate(oneDayAgo.getDate() - 1);
@@ -62,38 +88,17 @@ export const hasActiveSubscription = async (userId: string): Promise<boolean> =>
                 logger.info('Subscription within new-purchase grace period', {
                     user_id: userId,
                     subscription_id: subscription.id,
-                    created_at: subscription.created_at
+                    created_at: subscription.created_at,
                 });
                 return true;
             }
-            logger.info('Subscription exists but never charged and grace period expired', {
+            logger.info('Subscription created but never completed and grace period expired', {
                 user_id: userId,
-                subscription_id: subscription.id
+                subscription_id: subscription.id,
             });
             return false;
         }
 
-        // Calculate access period: one month from last_charged_at + 1 day grace period
-        const lastChargedDate = new Date(subscription.last_charged_at * 1000);
-        const accessEndDate = new Date(lastChargedDate);
-        accessEndDate.setDate(accessEndDate.getDate() + SUBSCRIPTION_MONTH_DAYS + GRACE_PERIOD_DAYS);
-        const now = new Date();
-
-        // Check if we're within access period (month + grace period)
-        if (now <= accessEndDate) {
-            logger.info('User has active subscription within access period', { 
-                user_id: userId, 
-                last_charged_at: subscription.last_charged_at,
-                access_end: accessEndDate.toISOString()
-            });
-            return true;
-        }
-
-        logger.info('Subscription access period expired', { 
-            user_id: userId, 
-            last_charged_at: subscription.last_charged_at,
-            access_end: accessEndDate.toISOString()
-        });
         return false;
     } catch (error) {
         logger.error('Error checking active subscription', { error, user_id: userId });
@@ -212,8 +217,10 @@ export const fetchAndUpdateSubscription = async (subscriptionId: string, userId:
             updated_at: new Date().toISOString(),
         };
 
-        // Update last_charged_at if subscription was charged
-        if (razorpaySubscription.status === 'active' && razorpaySubscription.current_start) {
+        // Update last_charged_at if subscription has been charged
+        // Check for 'active' or 'authenticated' — both indicate payment was made
+        if ((razorpaySubscription.status === 'active' || razorpaySubscription.status === 'authenticated')
+            && razorpaySubscription.current_start) {
             // If current_start is recent, it might be the last charge
             // We'll rely on webhooks for accurate last_charged_at, but update if we have better info
             const { data: existingSub } = await supabase
