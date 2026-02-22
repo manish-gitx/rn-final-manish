@@ -1,45 +1,37 @@
 {
   "project_info": {
-    "project_number": "70363574683",
-    "project_id": "talk-to-jesus-4fae7",
-    "storage_bucket": "talk-to-jesus-4fae7.firebasestorage.app"
+    "project_number": "982885317118",
+    "project_id": "talk-to-je",
+    "storage_bucket": "talk-to-je.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:70363574683:android:2606dca1d7c93db656f13e",
+        "mobilesdk_app_id": "1:982885317118:android:6b0d9effe64cef5c10a8af",
         "android_client_info": {
           "package_name": "com.example.talktojesus"
         }
       },
       "oauth_client": [
         {
-          "client_id": "70363574683-2nrsdqf2v2q210nlcfa3f3qvkil53j7s.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.talktojesus",
-            "certificate_hash": "01ab34de2f3426e42466bb5c125b3661330d40ab"
-          }
-        },
-        {
-          "client_id": "70363574683-4koltd49rudt3ln2bs1di7caibl1fblo.apps.googleusercontent.com",
+          "client_id": "982885317118-p59m63uis1d2m6f8invmkh0qq1g6ena3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDYusHUaQ_2D2QpycUaxflOSFlebfPZajU"
+          "current_key": "AIzaSyBHaqlXOdMSb2KyPpjXCgQA7mIUPaR6hAQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "70363574683-4koltd49rudt3ln2bs1di7caibl1fblo.apps.googleusercontent.com",
+              "client_id": "982885317118-p59m63uis1d2m6f8invmkh0qq1g6ena3.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "70363574683-7ir7i7um0p639hmafe8ffo1q6aqkarku.apps.googleusercontent.com",
+              "client_id": "982885317118-rpclaatvdd84dqndjg9pt5o9q1n8dltk.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.talktojesus"
