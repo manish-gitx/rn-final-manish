@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import path from 'path';
 import apiRouter from './api/routes';
 import logger from './utils/logger';
 
@@ -22,6 +23,15 @@ app.get('/', (req: Request, res: Response) => {
         timestamp: new Date().toISOString(),
     });
 });
+
+// Admin console (static). The page itself is public; every /api/admin/* call it
+// makes requires a JWT belonging to a user with is_admin = true.
+//
+// public/ lives at the package root, so __dirname/../public resolves the same
+// way under ts-node (src/..), a local dist build (dist/..), and the container
+// (/app/dist/.. -> /app/public). The root Dockerfile must COPY public/ for the
+// last case; nothing needs copying at build time.
+app.use('/admin', express.static(path.join(__dirname, '..', 'public', 'admin')));
 
 app.use('/api', apiRouter);
 

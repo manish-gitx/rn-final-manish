@@ -13,6 +13,26 @@ class Song {
     this.audioUrl,
   });
 
+  factory Song.fromJson(Map<String, dynamic> json) {
+    return Song(
+      id: json['id']?.toString() ?? '',
+      title: json['title'] as String? ?? '',
+      duration: json['duration'] as String? ?? '',
+      imageUrl: json['image_url'] as String?,
+      audioUrl: json['audio_url'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'duration': duration,
+      'image_url': imageUrl,
+      'audio_url': audioUrl,
+    };
+  }
+
   Song copyWith({
     String? id,
     String? title,

@@ -1,12 +1,38 @@
 import axios from 'axios';
 import logger from '../../utils/logger';
 
-export const callOpenAI = async (message: string, systemPrompt: string): Promise<string> => {
+export interface ConversationTurn {
+    user_message: string | null;
+    assistant_text: string | null;
+}
+
+/**
+ * @param history Prior turns, oldest first. Passing these makes the assistant
+ *                coherent across a session instead of answering each question
+ *                in isolation.
+ */
+export const callOpenAI = async (
+    message: string,
+    systemPrompt: string,
+    history: ConversationTurn[] = []
+): Promise<string> => {
     try {
+        const priorMessages = history.flatMap((turn) => {
+            const pair: Array<{ role: string; content: string }> = [];
+            if (turn.user_message) pair.push({ role: 'user', content: turn.user_message });
+            if (turn.assistant_text) pair.push({ role: 'assistant', content: turn.assistant_text });
+            return pair;
+        });
+
         const messages = [
             { role: 'system', content: systemPrompt },
+            ...priorMessages,
             { role: 'user', content: message },
         ];
+
+        if (priorMessages.length > 0) {
+            logger.info('Including conversation context', { prior_messages: priorMessages.length });
+        }
 
         const requestBody = {
             model: process.env.OPENAI_MODEL || 'gpt-4o',

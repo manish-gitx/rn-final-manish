@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { sendMessageHandler } from '../controllers/conversation.controller';
+import {
+    sendMessageHandler,
+    sendTextMessageHandler,
+    getHistoryHandler,
+} from '../controllers/conversation.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import logger from '../../utils/logger';
 
@@ -76,5 +80,11 @@ router.post('/send-message', authMiddleware, (req, res, next) => {
         next();
     });
 }, sendMessageHandler);
+
+// Text input path - same LLM/TTS pipeline, no Whisper step.
+router.post('/send-text', authMiddleware, sendTextMessageHandler);
+
+// Conversation history for the signed-in user.
+router.get('/history', authMiddleware, getHistoryHandler);
 
 export default router;

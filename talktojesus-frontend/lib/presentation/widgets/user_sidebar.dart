@@ -1,7 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/constants/app_strings.dart';
 import '../../core/constants/text_styles.dart';
+import '../../core/navigation/navigation_service.dart';
+import '../../core/providers/app_state_provider.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/widgets/shimmer_loading.dart';
 
@@ -18,6 +21,7 @@ class _UserSidebarState extends ConsumerState<UserSidebar> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final user = authState.user;
+    final language = ref.watch(appStateProvider).currentLanguage;
 
     return ClipRRect(
       child: BackdropFilter(
@@ -173,6 +177,26 @@ class _UserSidebarState extends ConsumerState<UserSidebar> {
                       highlightColor: Color.fromRGBO(255, 255, 255, 0.5),
                     ),
                   ),
+                // Conversation history — available to every signed-in user.
+                if (user != null)
+                  _SidebarTile(
+                    icon: Icons.history,
+                    label: AppStrings.get('conversation_history', language),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      NavigationService.navigateToConversationHistory();
+                    },
+                  ),
+                // Admin console — only for users flagged is_admin server-side.
+                if (user?.isAdmin == true)
+                  _SidebarTile(
+                    icon: Icons.insights,
+                    label: AppStrings.get('admin_console', language),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      NavigationService.navigateToAdmin();
+                    },
+                  ),
                 const Spacer(),
                 // Sign out button
                 Padding(
@@ -220,6 +244,75 @@ class _UserSidebarState extends ConsumerState<UserSidebar> {
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Glass-style navigation row matching the sidebar's Sign Out button.
+class _SidebarTile extends StatelessWidget {
+  const _SidebarTile({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Material(
+            color: Colors.white.withValues(alpha: 0.08),
+            child: InkWell(
+              onTap: onTap,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.18),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      icon,
+                      size: 20,
+                      color: Colors.white.withValues(alpha: 0.85),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        label,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right,
+                      size: 18,
+                      color: Colors.white.withValues(alpha: 0.5),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

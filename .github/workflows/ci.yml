@@ -1,0 +1,106 @@
+name: CI
+
+# Runs on every push and pull request to main.
+#
+# Deployment is separate: a Cloud Build trigger on the same branch builds the root
+# Dockerfile and updates Cloud Run (see cloudbuild.yaml). This workflow is the test
+# gate — it is what tells you a push is safe before Cloud Build ships it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# A newer push supersedes an in-flight run on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: Backend — build & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: TalkToJesus-backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node 20 to match the runtime in the root Dockerfile (node:20-alpine).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: TalkToJesus-backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # `tsc` with no emit errors also proves the build step Cloud Build will run.
+      - name: Typecheck and compile
+        run: npm run build
+
+      # No secrets required: src/__tests__/setup.ts stubs every env var the
+      # modules need at import time (JWT_SECRET, SUPABASE_*, RAZORPAY_*_DEV).
+      - name: Unit tests
+        run: npm test -- --ci
+
+  frontend:
+    name: Frontend — analyze & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: talktojesus-frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.6'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Errors fail the build; the 5 pre-existing infos/warnings do not.
+      # Drop these flags once that lint debt is cleared.
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Unit tests
+        run: flutter test
+
+  docker:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Same Dockerfile Cloud Build uses, so a broken image fails here first —
+      # in CI, not halfway through a deploy.
+      - name: Build image
+        run: docker build -t talktojesus-backend:ci .
+
+      # The admin console is static content copied in by a separate COPY layer.
+      # It is silently droppable, and the failure mode is a 404 on /admin in
+      # production, so assert it explicitly.
+      - name: Verify admin console shipped in the image
+        run: |
+          docker run --rm --entrypoint sh talktojesus-backend:ci \
+            -c 'test -f /app/public/admin/index.html' \
+            && echo "OK: /app/public/admin/index.html present"
+
+      - name: Verify compiled server entrypoint exists
+        run: |
+          docker run --rm --entrypoint sh talktojesus-backend:ci \
+            -c 'test -f /app/dist/index.js' \
+            && echo "OK: /app/dist/index.js present"

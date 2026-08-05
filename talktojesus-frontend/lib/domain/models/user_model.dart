@@ -9,6 +9,10 @@ class UserModel {
   final DateTime createdAt;
   final DateTime? lastLoginAt;
 
+  /// Mirrors `users.is_admin`. Gates the in-app admin screen. Defaults to false
+  /// when the field is absent, so an older backend can never grant access.
+  final bool isAdmin;
+
   UserModel({
     required this.id,
     required this.email,
@@ -17,6 +21,7 @@ class UserModel {
     required this.conversationCount,
     required this.createdAt,
     this.lastLoginAt,
+    this.isAdmin = false,
   });
 
   /// Check if this user is a tester account
@@ -33,6 +38,7 @@ class UserModel {
       lastLoginAt: json['last_login_at'] != null
           ? DateTime.parse(json['last_login_at'] as String)
           : null,
+      isAdmin: json['is_admin'] as bool? ?? false,
     );
   }
 
@@ -45,6 +51,7 @@ class UserModel {
       'conversation_count': conversationCount,
       'created_at': createdAt.toIso8601String(),
       'last_login_at': lastLoginAt?.toIso8601String(),
+      'is_admin': isAdmin,
     };
   }
 
@@ -56,6 +63,7 @@ class UserModel {
     int? conversationCount,
     DateTime? createdAt,
     DateTime? lastLoginAt,
+    bool? isAdmin,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -65,6 +73,7 @@ class UserModel {
       conversationCount: conversationCount ?? this.conversationCount,
       createdAt: createdAt ?? this.createdAt,
       lastLoginAt: lastLoginAt ?? this.lastLoginAt,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 }

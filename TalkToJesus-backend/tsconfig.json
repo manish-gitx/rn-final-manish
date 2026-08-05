@@ -109,5 +109,11 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+  },
+
+  /* Only src/ is compiled. Without this, tsc picks up jest.config.ts and
+     scripts/ at the project root and fails rootDir validation. The Docker
+     build never hit it because the image only copies src/ and tsconfig.json. */
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "src/__tests__"]
 }

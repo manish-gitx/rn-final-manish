@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/song.dart';
-import '../../data/repositories/mock_song_repository.dart';
+import '../../domain/repositories/song_repository.dart';
+import '../../data/repositories/api_song_repository.dart';
 import '../widgets/song_list_item.dart';
 import '../widgets/page_header.dart';
 import '../widgets/song_list_item_shimmer.dart';
@@ -16,9 +17,10 @@ class AudioSongsPage extends ConsumerStatefulWidget {
 }
 
 class _AudioSongsPageState extends ConsumerState<AudioSongsPage> {
-  final MockSongRepository _songRepository = MockSongRepository();
+  final SongRepository _songRepository = ApiSongRepository();
   List<Song> _songs = [];
   bool _isLoading = true;
+  String? _error;
 
   @override
   void initState() {
@@ -33,16 +35,24 @@ class _AudioSongsPageState extends ConsumerState<AudioSongsPage> {
   Future<void> _loadSongs() async {
     try {
       final songs = await _songRepository.getAllSongs();
+      if (!mounted) return;
       setState(() {
         _songs = songs;
+        _error = null;
         _isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
+        _error = 'Could not load songs. Pull down to retry.';
         _isLoading = false;
       });
       debugPrint('Error loading songs: $e');
     }
+  }
+
+  Future<void> _refreshSongs() async {
+    await _loadSongs();
   }
 
   void _onSongTap(Song song) {
@@ -53,6 +63,25 @@ class _AudioSongsPageState extends ConsumerState<AudioSongsPage> {
     );
     ref.read(analyticsServiceProvider).trackNavigation('Audio Songs', 'Audio Player');
     NavigationService.navigateToAudioPlayer(song);
+  }
+
+  Widget _buildEmptyState() {
+    return SizedBox(
+      height: 320,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Text(
+            _error ?? 'No songs yet. Pull down to refresh.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.7),
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -89,14 +118,21 @@ class _AudioSongsPageState extends ConsumerState<AudioSongsPage> {
                         ? const SingleChildScrollView(
                             child: SongListShimmer(),
                           )
-                        : SingleChildScrollView(
-                            child: Column(
-                              children: _songs
-                                  .map((song) => SongListItem(
-                                        song: song,
-                                        onTap: () => _onSongTap(song),
-                                      ))
-                                  .toList(),
+                        : RefreshIndicator(
+                            onRefresh: _refreshSongs,
+                            child: SingleChildScrollView(
+                              physics:
+                                  const AlwaysScrollableScrollPhysics(),
+                              child: _songs.isEmpty
+                                  ? _buildEmptyState()
+                                  : Column(
+                                      children: _songs
+                                          .map((song) => SongListItem(
+                                                song: song,
+                                                onTap: () => _onSongTap(song),
+                                              ))
+                                          .toList(),
+                                    ),
                             ),
                           ),
                   ),

@@ -7,6 +7,7 @@ import paymentRouter from './payment.routes';
 import subscriptionRouter from './subscription.routes';
 import webhookRouter from './webhook.routes';
 import conversationRouter from './conversation.routes';
+import adminRouter from './admin.routes';
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use('/payment', paymentRouter); // Kept for backward compatibility, redir
 router.use('/subscription', subscriptionRouter);
 router.use('/webhook', webhookRouter);
 router.use('/conversation', conversationRouter);
+router.use('/admin', adminRouter);
 
 export default router;

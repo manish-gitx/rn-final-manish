@@ -56,6 +56,14 @@ class NavigationService {
     await pushReplacementNamed(AppRoutes.home);
   }
 
+  static Future<void> navigateToConversationHistory() async {
+    await pushNamed(AppRoutes.conversationHistory);
+  }
+
+  static Future<void> navigateToAdmin() async {
+    await pushNamed(AppRoutes.admin);
+  }
+
   static bool canPop() {
     return navigator.canPop();
   }

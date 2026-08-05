@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Talk to Jesus — Admin Console</title>
+<style>
+  :root {
+    --bg: #12100e;
+    --panel: #1c1917;
+    --panel-2: #241f1b;
+    --line: #332c26;
+    --text: #f2ece5;
+    --muted: #a1968a;
+    --accent: #f0a04b;
+    --accent-2: #c9639b;
+    --ok: #4ec98a;
+    --bad: #e5544b;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--font); font-size: 14px; line-height: 1.5;
+  }
+  a { color: var(--accent); }
+  header {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    padding: 16px 24px; border-bottom: 1px solid var(--line); background: var(--panel);
+    position: sticky; top: 0; z-index: 10;
+  }
+  header h1 { font-size: 17px; margin: 0; font-weight: 600; letter-spacing: .2px; }
+  .spacer { flex: 1; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 4px 11px; border-radius: 999px; font-size: 12px;
+    background: var(--panel-2); border: 1px solid var(--line); color: var(--muted);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  .dot.bad { background: var(--bad); }
+  .dot.live { animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+  main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+  .grid { display: grid; gap: 16px; }
+  .cards { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 16px; }
+  .charts { grid-template-columns: 2fr 1fr; margin-bottom: 16px; }
+  @media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px 18px;
+  }
+  .card h2 { margin: 0 0 14px; font-size: 13px; font-weight: 600; color: var(--muted);
+             text-transform: uppercase; letter-spacing: .7px; }
+  .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; }
+  .stat-value { font-size: 30px; font-weight: 600; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .stat-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: 11px;
+       text-transform: uppercase; letter-spacing: .6px; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:hover { background: var(--panel-2); }
+  .truncate { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .table-wrap { overflow-x: auto; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tab {
+    padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 13px;
+    background: var(--panel); border: 1px solid var(--line); color: var(--muted);
+  }
+  .tab.active { background: var(--accent); border-color: var(--accent); color: #241a10; font-weight: 600; }
+  button {
+    font-family: inherit; font-size: 13px; cursor: pointer;
+    background: var(--panel-2); border: 1px solid var(--line);
+    color: var(--text); padding: 6px 12px; border-radius: 7px;
+  }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #241a10; font-weight: 600; }
+  button.danger:hover { border-color: var(--bad); color: var(--bad); }
+  input, select {
+    font-family: inherit; font-size: 13px; background: var(--bg);
+    border: 1px solid var(--line); color: var(--text);
+    padding: 7px 10px; border-radius: 7px; width: 100%;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--accent); }
+  .badge { padding: 2px 8px; border-radius: 999px; font-size: 11px; border: 1px solid var(--line); }
+  .badge.ok { color: var(--ok); border-color: rgba(78,201,138,.4); }
+  .badge.bad { color: var(--bad); border-color: rgba(229,84,75,.4); }
+  .badge.muted { color: var(--muted); }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .muted { color: var(--muted); }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 12px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; }
+  #login {
+    max-width: 380px; margin: 12vh auto; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 14px; padding: 28px;
+  }
+  #login h1 { font-size: 19px; margin: 0 0 6px; }
+  #login p { color: var(--muted); margin: 0 0 20px; font-size: 13px; }
+  #login label { display: block; font-size: 12px; color: var(--muted); margin: 12px 0 5px; }
+  #login button { width: 100%; margin-top: 20px; padding: 10px; }
+  .error { color: var(--bad); font-size: 13px; margin-top: 12px; min-height: 18px; }
+  .hidden { display: none !important; }
+  .empty { color: var(--muted); padding: 22px; text-align: center; font-size: 13px; }
+  .flag-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .flag-row:last-child { border-bottom: none; }
+  .flag-key { flex: 1; }
+  .flag-key code { font-size: 13px; }
+  .flag-key small { display: block; color: var(--muted); font-size: 11px; }
+  .flag-control { width: 130px; }
+</style>
+</head>
+<body>
+
+<!-- ------------------------------------------------------------------ login -->
+<div id="login">
+  <h1>Talk to Jesus</h1>
+  <p>Admin console</p>
+  <label for="email">Email</label>
+  <input id="email" type="email" autocomplete="username" placeholder="admin@example.com">
+  <label for="password">Password</label>
+  <input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+  <button class="primary" id="loginBtn">Sign in</button>
+  <div class="error" id="loginError"></div>
+</div>
+
+<!-- ------------------------------------------------------------- dashboard -->
+<div id="app" class="hidden">
+  <header>
+    <h1>Talk to Jesus <span class="muted">— Admin Console</span></h1>
+    <span class="pill"><span class="dot live" id="liveDot"></span><span id="liveLabel">Live</span></span>
+    <span class="pill" id="healthPill">—</span>
+    <div class="spacer"></div>
+    <span class="pill" id="whoami">—</span>
+    <button id="refreshBtn">Refresh</button>
+    <button id="logoutBtn">Sign out</button>
+  </header>
+
+  <main>
+    <section class="grid cards" id="cards"></section>
+
+    <section class="grid charts">
+      <div class="card">
+        <h2>Conversations per day</h2>
+        <div id="timeseries"></div>
+      </div>
+      <div class="card">
+        <h2>Language split</h2>
+        <div id="languages"></div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:16px">
+      <h2>Pipeline latency — where the seconds go</h2>
+      <div id="latency"></div>
+    </section>
+
+    <section class="card">
+      <div class="tabs" id="tabs">
+        <div class="tab active" data-tab="users">Users</div>
+        <div class="tab" data-tab="songs">Songs</div>
+        <div class="tab" data-tab="conversations">Conversations</div>
+        <div class="tab" data-tab="webhooks">Webhooks</div>
+        <div class="tab" data-tab="flags">Feature flags</div>
+        <div class="tab" data-tab="audit">Audit log</div>
+      </div>
+      <div id="tabContent"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var TOKEN_KEY = 'ttj_admin_token';
+  var POLL_MS = 5000;
+  var token = localStorage.getItem(TOKEN_KEY);
+  var activeTab = 'users';
+  var pollTimer = null;
+  var latest = {};
+
+  // ------------------------------------------------------------------ utils
+  function $(id) { return document.getElementById(id); }
+
+  function esc(value) {
+    if (value === null || value === undefined) return '';
+    return String(value).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function fmt(n) {
+    if (n === null || n === undefined) return '—';
+    return Number(n).toLocaleString('en-IN');
+  }
+
+  function ms(v) { return v === null || v === undefined ? '—' : fmt(Math.round(v)) + ' ms'; }
+
+  function ago(iso) {
+    if (!iso) return '—';
+    var diff = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (diff < 60) return Math.max(0, Math.round(diff)) + 's ago';
+    if (diff < 3600) return Math.round(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.round(diff / 3600) + 'h ago';
+    return Math.round(diff / 86400) + 'd ago';
+  }
+
+  function api(path, options) {
+    options = options || {};
+    var headers = { 'Accept': 'application/json' };
+    if (options.body) headers['Content-Type'] = 'application/json';
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+    return fetch('/api/admin' + path, {
+      method: options.method || 'GET',
+      headers: headers,
+      body: options.body ? JSON.stringify(options.body) : undefined
+    }).then(function (res) {
+      if (res.status === 401 || res.status === 404) {
+        // 404 is what admin.middleware returns for a non-admin token.
+        if (path !== '/login') { logout(); }
+        throw new Error('Not authorised');
+      }
+      return res.json().then(function (data) {
+        if (!res.ok) throw new Error(data.error || data.message || 'Request failed');
+        return data;
+      });
+    });
+  }
+
+  // ------------------------------------------------------------------ charts
+  // Hand-rolled SVG: no CDN, no external library, so a flaky venue network
+  // can never blank the dashboard mid-demo.
+
+  function barChart(series, key, color) {
+    if (!series || !series.length) return '<div class="empty">No data yet</div>';
+
+    var W = 720, H = 190, padL = 34, padB = 26, padT = 10;
+    var max = Math.max.apply(null, series.map(function (d) { return d[key]; }));
+    if (max <= 0) max = 1;
+    var innerW = W - padL - 10, innerH = H - padB - padT;
+    var bw = innerW / series.length;
+
+    var bars = series.map(function (d, i) {
+      var h = (d[key] / max) * innerH;
+      var x = padL + i * bw;
+      var y = padT + innerH - h;
+      return '<rect x="' + (x + bw * 0.15).toFixed(1) + '" y="' + y.toFixed(1) +
+        '" width="' + (bw * 0.7).toFixed(1) + '" height="' + Math.max(h, d[key] > 0 ? 2 : 0).toFixed(1) +
+        '" rx="2" fill="' + color + '"><title>' + d.date + ': ' + d[key] + '</title></rect>';
+    }).join('');
+
+    var ticks = [0, Math.round(max / 2), max].map(function (v) {
+      var y = padT + innerH - (v / max) * innerH;
+      return '<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + W + '" y2="' + y.toFixed(1) +
+        '" stroke="#332c26" stroke-width="1"/>' +
+        '<text x="0" y="' + (y + 4).toFixed(1) + '" fill="#a1968a" font-size="10">' + v + '</text>';
+    }).join('');
+
+    var labels = series.map(function (d, i) {
+      if (series.length > 12 && i % Math.ceil(series.length / 8) !== 0) return '';
+      var x = padL + i * bw + bw / 2;
+      return '<text x="' + x.toFixed(1) + '" y="' + (H - 8) +
+        '" fill="#a1968a" font-size="10" text-anchor="middle">' + d.date.slice(5) + '</text>';
+    }).join('');
+
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" preserveAspectRatio="xMidYMid meet">' +
+      ticks + bars + labels + '</svg>';
+  }
+
+  function donut(items) {
+    if (!items || !items.length) return '<div class="empty">No data yet</div>';
+
+    var colors = ['#f0a04b', '#c9639b', '#4ec98a', '#5b9bd5', '#a1968a'];
+    var total = items.reduce(function (sum, i) { return sum + i.count; }, 0);
+    if (total === 0) return '<div class="empty">No data yet</div>';
+
+    var cx = 90, cy = 90, r = 66, sw = 26;
+    var circumference = 2 * Math.PI * r;
+    var offset = 0;
+
+    var arcs = items.map(function (item, idx) {
+      var frac = item.count / total;
+      var dash = frac * circumference;
+      var seg = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' +
+        colors[idx % colors.length] + '" stroke-width="' + sw +
+        '" stroke-dasharray="' + dash.toFixed(2) + ' ' + (circumference - dash).toFixed(2) +
+        '" stroke-dashoffset="' + (-offset).toFixed(2) +
+        '" transform="rotate(-90 ' + cx + ' ' + cy + ')"><title>' +
+        esc(item.language) + ': ' + item.count + '</title></circle>';
+      offset += dash;
+      return seg;
+    }).join('');
+
+    var legend = items.map(function (item, idx) {
+      return '<span><i class="swatch" style="background:' + colors[idx % colors.length] + '"></i>' +
+        esc(item.language.toUpperCase()) + ' — ' + fmt(item.count) + ' (' + item.pct + '%)</span>';
+    }).join('');
+
+    return '<svg viewBox="0 0 180 180" width="180" height="180" style="display:block;margin:0 auto">' +
+      arcs +
+      '<text x="90" y="86" text-anchor="middle" fill="#f2ece5" font-size="22" font-weight="600">' +
+      fmt(total) + '</text>' +
+      '<text x="90" y="104" text-anchor="middle" fill="#a1968a" font-size="10">TURNS</text>' +
+      '</svg><div class="legend">' + legend + '</div>';
+  }
+
+  function latencyBars(data) {
+    if (!data || !data.sample_size) return '<div class="empty">No conversations logged yet</div>';
+
+    var stages = [
+      { key: 'stt', label: 'Speech to text (Whisper)', color: '#5b9bd5' },
+      { key: 'llm', label: 'AI response (GPT-4o)', color: '#f0a04b' },
+      { key: 'tts', label: 'Text to speech (ElevenLabs)', color: '#c9639b' },
+      { key: 'total', label: 'End to end', color: '#4ec98a' }
+    ];
+
+    var max = Math.max.apply(null, stages.map(function (s) {
+      return (data[s.key] && data[s.key].p95) || 0;
+    })) || 1;
+
+    var rows = stages.map(function (s) {
+      var stage = data[s.key] || {};
+      var p50 = stage.p50 || 0, p95 = stage.p95 || 0;
+      return '<tr>' +
+        '<td style="width:220px">' + s.label + '</td>' +
+        '<td style="min-width:220px">' +
+          '<svg viewBox="0 0 300 22" width="100%" height="22" preserveAspectRatio="none">' +
+            '<rect x="0" y="4" width="' + ((p95 / max) * 300).toFixed(1) + '" height="14" rx="3" fill="' + s.color + '" opacity="0.28"/>' +
+            '<rect x="0" y="4" width="' + ((p50 / max) * 300).toFixed(1) + '" height="14" rx="3" fill="' + s.color + '"/>' +
+          '</svg>' +
+        '</td>' +
+        '<td class="num">' + ms(stage.p50) + '</td>' +
+        '<td class="num">' + ms(stage.p95) + '</td>' +
+      '</tr>';
+    }).join('');
+
+    return '<div class="table-wrap"><table>' +
+      '<thead><tr><th>Stage</th><th></th><th class="num">p50</th><th class="num">p95</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table></div>' +
+      '<div class="legend"><span class="muted">Sample: last ' + fmt(data.sample_size) +
+      ' turns (' + fmt(data.voice_turns) + ' voice, ' + fmt(data.text_turns) +
+      ' text). Solid bar = p50, faded = p95.</span></div>';
+  }
+
+  // ------------------------------------------------------------------ cards
+  function renderCards(o) {
+    var cards = [
+      { label: 'Users', value: fmt(o.total_users), sub: 'registered' },
+      { label: 'Conversations', value: fmt(o.total_conversations), sub: 'turns logged' },
+      { label: 'Active subs', value: fmt(o.active_subscriptions), sub: fmt(o.paying_users) + ' paying users' },
+      { label: 'MRR', value: '₹' + fmt(o.mrr_rupees), sub: 'monthly recurring' },
+      { label: 'Free → paid', value: o.conversion_rate_pct + '%', sub: 'conversion' },
+      { label: 'Avg latency', value: o.avg_latency_ms ? (o.avg_latency_ms / 1000).toFixed(1) + 's' : '—', sub: 'end to end' }
+    ];
+
+    $('cards').innerHTML = cards.map(function (c) {
+      return '<div class="card"><div class="stat-label">' + c.label + '</div>' +
+        '<div class="stat-value">' + c.value + '</div>' +
+        '<div class="stat-sub">' + c.sub + '</div></div>';
+    }).join('');
+  }
+
+  function renderHealth(h) {
+    var ok = h.status === 'healthy';
+    $('healthPill').innerHTML = '<span class="dot' + (ok ? '' : ' bad') + '"></span>' +
+      esc(h.environment) + ' · node ' + esc(h.node_version) +
+      ' · db ' + h.database.ping_ms + 'ms · up ' + h.process_uptime_seconds + 's · ' + h.memory_mb + 'MB';
+  }
+
+  // ------------------------------------------------------------------- tabs
+  function table(columns, rows, emptyMessage) {
+    if (!rows || !rows.length) return '<div class="empty">' + emptyMessage + '</div>';
+    var head = columns.map(function (c) {
+      return '<th' + (c.num ? ' class="num"' : '') + '>' + c.label + '</th>';
+    }).join('');
+    var body = rows.map(function (r) {
+      return '<tr>' + columns.map(function (c) {
+        return '<td' + (c.num ? ' class="num"' : '') + (c.truncate ? ' class="truncate"' : '') + '>' +
+          c.render(r) + '</td>';
+      }).join('') + '</tr>';
+    }).join('');
+    return '<div class="table-wrap"><table><thead><tr>' + head + '</tr></thead><tbody>' +
+      body + '</tbody></table></div>';
+  }
+
+  var tabRenderers = {
+    users: function () {
+      return api('/users?limit=25').then(function (res) {
+        return table([
+          { label: 'Email', render: function (u) { return esc(u.email); } },
+          { label: 'Name', render: function (u) { return esc(u.display_name || '—'); } },
+          { label: 'Convos', num: true, render: function (u) { return fmt(u.conversation_count); } },
+          { label: 'Plan', render: function (u) {
+              if (!u.subscription) return '<span class="badge muted">Free</span>';
+              var active = u.subscription.status === 'active' || u.subscription.status === 'authenticated';
+              return '<span class="badge ' + (active ? 'ok' : 'muted') + '">' +
+                esc(u.subscription.status) + '</span>';
+            } },
+          { label: 'Admin', render: function (u) {
+              return u.is_admin ? '<span class="badge ok">yes</span>' : '<span class="muted">—</span>';
+            } },
+          { label: 'Last login', render: function (u) { return ago(u.last_login_at); } },
+          { label: '', render: function (u) {
+              return '<button data-action="reset-user" data-id="' + esc(u.id) +
+                '">Reset free tier</button>';
+            } }
+        ], res.data, 'No users yet');
+      });
+    },
+
+    songs: function () {
+      return api('/songs?limit=25').then(function (res) {
+        var form = '<div class="card" style="margin-bottom:14px;background:var(--panel-2)">' +
+          '<h2>Add a song</h2>' +
+          '<div class="row">' +
+            '<div style="flex:2;min-width:160px"><input id="songTitle" placeholder="Title"></div>' +
+            '<div style="flex:1;min-width:90px"><input id="songDuration" placeholder="3:45"></div>' +
+            '<div style="flex:2;min-width:180px"><input id="songImage" placeholder="https://…/cover.jpg"></div>' +
+            '<div style="flex:2;min-width:180px"><input id="songAudio" placeholder="https://…/audio.mp3"></div>' +
+            '<button class="primary" data-action="add-song">Add</button>' +
+          '</div>' +
+          '<div class="error" id="songError"></div></div>';
+
+        return form + table([
+          { label: 'Title', render: function (s) { return esc(s.title); } },
+          { label: 'Duration', render: function (s) { return esc(s.duration); } },
+          { label: 'Audio', render: function (s) {
+              return s.audio_url ? '<a href="' + esc(s.audio_url) + '" target="_blank" rel="noopener">link</a>' : '—';
+            } },
+          { label: 'Added', render: function (s) { return ago(s.created_at); } },
+          { label: '', render: function (s) {
+              return '<button class="danger" data-action="delete-song" data-id="' + esc(s.id) + '">Delete</button>';
+            } }
+        ], res.data, 'No songs yet — add one above, then pull to refresh in the app.');
+      });
+    },
+
+    conversations: function () {
+      return api('/conversations?limit=25').then(function (res) {
+        return table([
+          { label: 'When', render: function (c) { return ago(c.created_at); } },
+          { label: 'Lang', render: function (c) { return '<span class="badge">' + esc(c.language) + '</span>'; } },
+          { label: 'Mode', render: function (c) { return esc(c.input_mode); } },
+          { label: 'User said', truncate: true, render: function (c) { return esc(c.user_message || '—'); } },
+          { label: 'Replied', truncate: true, render: function (c) { return esc(c.assistant_text || '—'); } },
+          { label: 'STT', num: true, render: function (c) { return ms(c.stt_ms); } },
+          { label: 'LLM', num: true, render: function (c) { return ms(c.llm_ms); } },
+          { label: 'TTS', num: true, render: function (c) { return ms(c.tts_ms); } },
+          { label: 'Total', num: true, render: function (c) { return ms(c.total_ms); } }
+        ], res.data, 'No conversations logged yet');
+      });
+    },
+
+    webhooks: function () {
+      return api('/webhooks?limit=25').then(function (res) {
+        return table([
+          { label: 'When', render: function (w) { return ago(w.created_at); } },
+          { label: 'Event', render: function (w) { return esc(w.event_type); } },
+          { label: 'Subscription', render: function (w) { return esc(w.razorpay_subscription_id || '—'); } },
+          { label: 'Signature', render: function (w) {
+              return w.signature_valid
+                ? '<span class="badge ok">verified</span>'
+                : '<span class="badge bad">rejected</span>';
+            } }
+        ], res.data, 'No webhook events received yet');
+      });
+    },
+
+    flags: function () {
+      return api('/flags').then(function (res) {
+        if (!res.flags || !res.flags.length) return '<div class="empty">No feature flags configured</div>';
+        return '<div>' + res.flags.map(function (f) {
+          var control;
+          if (typeof f.value === 'boolean') {
+            control = '<select data-action="set-flag" data-key="' + esc(f.key) + '">' +
+              '<option value="true"' + (f.value ? ' selected' : '') + '>on</option>' +
+              '<option value="false"' + (!f.value ? ' selected' : '') + '>off</option></select>';
+          } else {
+            control = '<input type="number" value="' + esc(f.value) +
+              '" data-action="set-flag-number" data-key="' + esc(f.key) + '">';
+          }
+          return '<div class="flag-row"><div class="flag-key"><code>' + esc(f.key) + '</code>' +
+            '<small>' + esc(f.description || '') + '</small></div>' +
+            '<div class="flag-control">' + control + '</div></div>';
+        }).join('') + '</div>';
+      });
+    },
+
+    audit: function () {
+      return api('/audit?limit=30').then(function (res) {
+        return table([
+          { label: 'When', render: function (a) { return ago(a.created_at); } },
+          { label: 'Admin', render: function (a) { return esc(a.admin_email || '—'); } },
+          { label: 'Action', render: function (a) { return '<span class="badge">' + esc(a.action) + '</span>'; } },
+          { label: 'Target', truncate: true, render: function (a) { return esc(a.target || '—'); } },
+          { label: 'Detail', truncate: true, render: function (a) {
+              return a.meta ? esc(JSON.stringify(a.meta)) : '—';
+            } }
+        ], res.data, 'No admin actions recorded yet');
+      });
+    }
+  };
+
+  function renderTab() {
+    var renderer = tabRenderers[activeTab];
+    if (!renderer) return;
+    renderer()
+      .then(function (html) { $('tabContent').innerHTML = html; })
+      .catch(function (err) {
+        $('tabContent').innerHTML = '<div class="empty">' + esc(err.message) + '</div>';
+      });
+  }
+
+  // ------------------------------------------------------------------ poll
+  function refresh() {
+    return Promise.all([
+      api('/stats/overview'),
+      api('/stats/timeseries?days=30'),
+      api('/stats/languages'),
+      api('/stats/latency'),
+      api('/health')
+    ]).then(function (results) {
+      latest = {
+        overview: results[0], timeseries: results[1],
+        languages: results[2], latency: results[3], health: results[4]
+      };
+      renderCards(latest.overview);
+      $('timeseries').innerHTML = barChart(latest.timeseries.series, 'conversations', '#f0a04b');
+      $('languages').innerHTML = donut(latest.languages.languages);
+      $('latency').innerHTML = latencyBars(latest.latency);
+      renderHealth(latest.health);
+      $('liveDot').classList.remove('bad');
+      $('liveLabel').textContent = 'Live';
+    }).catch(function (err) {
+      $('liveDot').classList.add('bad');
+      $('liveLabel').textContent = err.message || 'Disconnected';
+    });
+  }
+
+  function startPolling() {
+    stopPolling();
+    pollTimer = setInterval(function () {
+      refresh();
+      renderTab();
+    }, POLL_MS);
+  }
+
+  function stopPolling() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  }
+
+  // ------------------------------------------------------------------ auth
+  function showApp(user) {
+    $('login').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    $('whoami').textContent = user.email;
+    refresh();
+    renderTab();
+    startPolling();
+  }
+
+  function logout() {
+    stopPolling();
+    token = null;
+    localStorage.removeItem(TOKEN_KEY);
+    $('app').classList.add('hidden');
+    $('login').classList.remove('hidden');
+  }
+
+  function login() {
+    var email = $('email').value.trim();
+    var password = $('password').value;
+    $('loginError').textContent = '';
+
+    fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password })
+    }).then(function (res) {
+      return res.json().then(function (data) {
+        if (!res.ok) throw new Error(data.error || 'Login failed');
+        return data;
+      });
+    }).then(function (data) {
+      token = data.token;
+      localStorage.setItem(TOKEN_KEY, token);
+      showApp(data.user);
+    }).catch(function (err) {
+      $('loginError').textContent = err.message;
+    });
+  }
+
+  // ------------------------------------------------------------------ events
+  $('loginBtn').addEventListener('click', login);
+  $('password').addEventListener('keydown', function (e) { if (e.key === 'Enter') login(); });
+  $('email').addEventListener('keydown', function (e) { if (e.key === 'Enter') login(); });
+  $('logoutBtn').addEventListener('click', logout);
+  $('refreshBtn').addEventListener('click', function () { refresh(); renderTab(); });
+
+  $('tabs').addEventListener('click', function (e) {
+    var tab = e.target.closest('.tab');
+    if (!tab) return;
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+      t.classList.remove('active');
+    });
+    tab.classList.add('active');
+    activeTab = tab.dataset.tab;
+    $('tabContent').innerHTML = '<div class="empty">Loading…</div>';
+    renderTab();
+  });
+
+  $('tabContent').addEventListener('click', function (e) {
+    var el = e.target.closest('[data-action]');
+    if (!el) return;
+    var action = el.dataset.action;
+
+    if (action === 'reset-user') {
+      api('/users/' + el.dataset.id, { method: 'PATCH', body: { conversation_count: 0 } })
+        .then(function () { renderTab(); refresh(); })
+        .catch(function (err) { alert(err.message); });
+    }
+
+    if (action === 'delete-song') {
+      api('/songs/' + el.dataset.id, { method: 'DELETE' })
+        .then(function () { renderTab(); })
+        .catch(function (err) { alert(err.message); });
+    }
+
+    if (action === 'add-song') {
+      var body = {
+        title: $('songTitle').value.trim(),
+        duration: $('songDuration').value.trim(),
+        image_url: $('songImage').value.trim(),
+        audio_url: $('songAudio').value.trim()
+      };
+      api('/songs', { method: 'POST', body: body })
+        .then(function () { renderTab(); })
+        .catch(function (err) { $('songError').textContent = err.message; });
+    }
+  });
+
+  $('tabContent').addEventListener('change', function (e) {
+    var el = e.target.closest('[data-action]');
+    if (!el) return;
+
+    if (el.dataset.action === 'set-flag') {
+      api('/flags', { method: 'PATCH', body: { key: el.dataset.key, value: el.value === 'true' } })
+        .catch(function (err) { alert(err.message); });
+    }
+
+    if (el.dataset.action === 'set-flag-number') {
+      api('/flags', { method: 'PATCH', body: { key: el.dataset.key, value: Number(el.value) } })
+        .catch(function (err) { alert(err.message); });
+    }
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { stopPolling(); } else if (token) { refresh(); startPolling(); }
+  });
+
+  // ------------------------------------------------------------------ boot
+  if (token) {
+    api('/me')
+      .then(function (user) { showApp(user); })
+      .catch(function () { logout(); });
+  }
+})();
+</script>
+</body>
+</html>

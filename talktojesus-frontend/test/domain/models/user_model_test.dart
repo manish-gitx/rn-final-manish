@@ -72,6 +72,31 @@ void main() {
       expect(updated.email, user.email); // unchanged
     });
 
+    test('isAdmin defaults to false when the field is absent', () {
+      // An older backend that does not send is_admin must never grant access.
+      final user = UserModel.fromJson(sampleJson);
+      expect(user.isAdmin, isFalse);
+    });
+
+    test('isAdmin parses true from the backend', () {
+      final user = UserModel.fromJson({...sampleJson, 'is_admin': true});
+      expect(user.isAdmin, isTrue);
+    });
+
+    test('isAdmin survives a toJson/fromJson round-trip', () {
+      final user = UserModel.fromJson({...sampleJson, 'is_admin': true});
+      expect(UserModel.fromJson(user.toJson()).isAdmin, isTrue);
+    });
+
+    test('copyWith can toggle isAdmin without touching other fields', () {
+      final user = UserModel.fromJson(sampleJson);
+      final promoted = user.copyWith(isAdmin: true);
+
+      expect(promoted.isAdmin, isTrue);
+      expect(promoted.email, user.email);
+      expect(user.isAdmin, isFalse); // original untouched
+    });
+
     test('isTester returns true for tester user ID', () {
       final testerJson = {
         ...sampleJson,

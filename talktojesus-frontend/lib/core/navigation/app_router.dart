@@ -5,6 +5,8 @@ import '../../presentation/pages/jesus_page.dart';
 import '../../presentation/pages/audio_songs_page.dart';
 import '../../presentation/pages/audio_player_page.dart';
 import '../../presentation/pages/bible_page.dart';
+import '../../presentation/pages/conversation_history_page.dart';
+import '../../presentation/pages/admin_page.dart';
 import 'app_routes.dart';
 import 'page_transitions.dart';
 
@@ -37,6 +39,18 @@ class AppRouter {
         return CustomSlideTransition(
           page: const BiblePage(),
           beginOffset: const Offset(0.0, 1.0),
+        );
+
+      case AppRoutes.conversationHistory:
+        return CustomSlideTransition(
+          page: const ConversationHistoryPage(),
+          beginOffset: const Offset(1.0, 0.0),
+        );
+
+      case AppRoutes.admin:
+        return CustomSlideTransition(
+          page: const AdminPage(),
+          beginOffset: const Offset(1.0, 0.0),
         );
 
       default:

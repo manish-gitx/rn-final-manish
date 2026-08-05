@@ -15,8 +15,13 @@ class ApiConstants {
   static const String createSubscription = '/api/subscription/create';
   static const String getCurrentSubscription = '/api/subscription/current';
 
+  // Songs endpoints
+  static const String getSongs = '/api/songs';
+
   // Conversation endpoints
   static const String sendMessage = '/api/conversation/send-message';
+  static const String sendTextMessage = '/api/conversation/send-text';
+  static const String conversationHistory = '/api/conversation/history';
 
   // Helper method to get full URL
   static String getUrl(String endpoint) {

@@ -224,31 +224,49 @@ Before you begin, ensure you have the following installed:
    NODE_ENV=development
 
    # Supabase Configuration
+   # This must be a secret/service-tier key: RLS is enabled on every table with
+   # no policies, so an anon/publishable key reads nothing.
    SUPABASE_URL=your_supabase_url
-   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+   SUPABASE_KEY=your_supabase_secret_key
 
    # JWT Configuration
    JWT_SECRET=your_jwt_secret_key
 
-   # Google OAuth
-   GOOGLE_CLIENT_ID=your_google_client_id
+   # Google OAuth (one client ID per platform)
+   GOOGLE_CLIENT_ID_WEB=your_google_web_client_id
+   GOOGLE_CLIENT_ID_IOS=your_google_ios_client_id
+   GOOGLE_CLIENT_ID_ANDROID=your_google_android_client_id
 
    # OpenAI API
    OPENAI_API_KEY=your_openai_api_key
+   OPENAI_MODEL=gpt-4o
 
    # ElevenLabs API
    ELEVENLABS_API_KEY=your_elevenlabs_api_key
+   ELEVENLABS_VOICE_ID=your_voice_id
+   ELEVENLABS_MODEL=eleven_multilingual_v2
 
-   # Razorpay Configuration
-   RAZORPAY_KEY_ID=your_razorpay_key_id
-   RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-   RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
+   # Razorpay Configuration (dev and prod pairs; selected by NODE_ENV)
+   RAZORPAY_KEY_ID_DEV=your_razorpay_test_key_id
+   RAZORPAY_KEY_SECRET_DEV=your_razorpay_test_secret
+   RAZORPAY_WEBHOOK_SECRET_DEV=your_razorpay_test_webhook_secret
+   RAZORPAY_KEY_ID_PROD=your_razorpay_live_key_id
+   RAZORPAY_KEY_SECRET_PROD=your_razorpay_live_secret
+   RAZORPAY_WEBHOOK_SECRET_PROD=your_razorpay_live_webhook_secret
+
+   # Admin console login (POST /api/admin/login)
+   ADMIN_EMAIL=you@example.com
+   ADMIN_PASSWORD=a_strong_password
    ```
 
 4. **Set up the database**:
    ```bash
-   # Run the SQL setup script in your Supabase dashboard
-   # File location: TalkToJesus-backend/supabase-setup.sql
+   # Run both SQL scripts in your Supabase SQL Editor, in order:
+   #   1. TalkToJesus-backend/supabase-setup.sql        (core tables)
+   #   2. TalkToJesus-backend/supabase-admin-setup.sql  (admin + analytics)
+   #
+   # Then promote your own account:
+   #   UPDATE users SET is_admin = true WHERE email = 'you@example.com';
    ```
 
 5. **Start the development server**:
@@ -368,12 +386,34 @@ The backend provides the following API groups:
 
 - **Authentication**: User signup/signin with Google OAuth
 - **User Management**: Profile information and user data
-- **Conversations**: AI-powered chat with voice support
+- **Conversations**: AI-powered chat with voice and text input, multi-turn context, and history
 - **Songs**: Spiritual music library management
 - **Plans**: Subscription plan information
 - **Subscriptions**: User subscription management
 - **Payments**: Payment processing with Razorpay
 - **Webhooks**: Payment status updates
+- **Admin**: Analytics, user/song management, feature flags, health (requires `is_admin`)
+
+### Admin Console
+
+A self-contained web dashboard is served by the backend itself at **`/admin`**
+(e.g. `http://localhost:4040/admin`). Sign in with `ADMIN_EMAIL` / `ADMIN_PASSWORD`;
+the matching user row must also have `is_admin = true`.
+
+It shows live user/conversation/subscription counts, MRR and free→paid conversion,
+conversations per day, the English/Telugu split, a per-stage latency breakdown
+(STT / LLM / TTS, p50 and p95), song CRUD, the Razorpay webhook log with
+signature-verification status, runtime feature flags, and an admin audit trail.
+
+To populate it with demo data for a presentation:
+
+```bash
+cd TalkToJesus-backend
+npm run seed:demo          # ~200 conversations across 30 days
+npm run seed:demo:clear    # remove them again
+```
+
+Seeded rows are tagged and removable — it is demonstration data, not real traffic.
 
 All authenticated endpoints require a JWT token in the Authorization header:
 ```

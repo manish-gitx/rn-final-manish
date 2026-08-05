@@ -22,7 +22,11 @@ import 'presentation/pages/loading_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    // Firebase already initialized, ignore
+  }
 
   // Initialize flavor configuration with production settings
   if (!FlavorConfig.isInitialized) {

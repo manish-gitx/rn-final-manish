@@ -86,13 +86,12 @@ class _JesusPageState extends ConsumerState<JesusPage> with RouteAware {
     }
   }
 
-  // TODO: Jesus Songs navigation temporarily commented out
-  // void _navigateToAudioSongs() {
-  //   ref
-  //       .read(analyticsServiceProvider)
-  //       .trackNavigation('Jesus Page', 'Audio Songs');
-  //   _fadeOutAndNavigate(() => NavigationService.navigateToAudioSongs());
-  // }
+  void _navigateToAudioSongs() {
+    ref
+        .read(analyticsServiceProvider)
+        .trackNavigation('Jesus Page', 'Audio Songs');
+    _fadeOutAndNavigate(() => NavigationService.navigateToAudioSongs());
+  }
 
   void _navigateToBible() {
     ref.read(analyticsServiceProvider).trackNavigation('Jesus Page', 'Bible');
@@ -425,9 +424,7 @@ class _JesusPageState extends ConsumerState<JesusPage> with RouteAware {
                 ),
                 // Bottom section
                 BottomSectionWidget(
-                  // TODO: Jesus Songs navigation temporarily disabled
-                  onJesusSongsTap:
-                      () {}, // Placeholder - feature temporarily disabled
+                  onJesusSongsTap: _navigateToAudioSongs,
                   onBibleTap: _navigateToBible,
                   // TODO: Input handling temporarily disabled - will be replaced with voice
                   onInputSubmitted: null,

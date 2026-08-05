@@ -18,6 +18,10 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
 
+# Admin console assets. Served from /app/public via __dirname/../public in
+# src/index.ts — without this the container 404s on /admin.
+COPY TalkToJesus-backend/public ./public
+
 EXPOSE 8080
 
 ENV PORT=8080

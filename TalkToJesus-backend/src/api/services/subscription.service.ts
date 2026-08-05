@@ -13,7 +13,10 @@ const GRACE_PERIOD_DAYS = 1; // 1 day grace period after subscription period end
  * 1. User has conversation_count < 3 (free tier: 3 free conversations)
  * 2. User has active/authenticated/created subscription with valid access period
  */
-export const hasActiveSubscription = async (userId: string): Promise<boolean> => {
+export const hasActiveSubscription = async (
+    userId: string,
+    freeLimit: number = FREE_CONVERSATION_LIMIT
+): Promise<boolean> => {
     try {
         // First, check user's conversation count
         const { data: user, error: userError } = await supabase
@@ -27,11 +30,12 @@ export const hasActiveSubscription = async (userId: string): Promise<boolean> =>
             return false;
         }
 
-        // Free tier: allow if conversation_count < FREE_CONVERSATION_LIMIT (0, 1, 2 = 3 free conversations)
-        if (user.conversation_count < FREE_CONVERSATION_LIMIT) {
-            logger.info('User within free tier limit', { 
-                user_id: userId, 
-                conversation_count: user.conversation_count 
+        // Free tier: allow if conversation_count < freeLimit (0, 1, 2 = 3 free conversations)
+        if (user.conversation_count < freeLimit) {
+            logger.info('User within free tier limit', {
+                user_id: userId,
+                conversation_count: user.conversation_count,
+                free_limit: freeLimit
             });
             return true;
         }

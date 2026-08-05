@@ -8,6 +8,8 @@ import '../../domain/models/user_model.dart';
 import '../../domain/models/plan_model.dart';
 import '../../domain/models/subscription_model.dart';
 import '../../domain/models/conversation_response_model.dart';
+import '../../domain/models/conversation_history_model.dart';
+import '../../domain/models/song.dart';
 import 'token_service.dart';
 
 class ApiResponse<T> {
@@ -301,6 +303,163 @@ class ApiClient {
         isSuccess: false,
         error: e.toString(),
       );
+    }
+  }
+
+  /// Text path to the same AI pipeline. Skips speech-to-text entirely, so it
+  /// returns noticeably faster than [sendMessage] and works in a noisy room.
+  Future<ApiResponse<ConversationResponse>> sendTextMessage(
+    String message, {
+    String language = 'en',
+  }) async {
+    try {
+      debugPrint('[ApiClient] Sending text message (language: $language)...');
+
+      final url = Uri.parse(ApiConstants.getUrl(ApiConstants.sendTextMessage));
+      final body = jsonEncode({'message': message, 'language': language});
+
+      final headers = await _getHeaders(includeAuth: true);
+      final response = await http.post(url, headers: headers, body: body);
+
+      debugPrint('[ApiClient] Response status: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        return ApiResponse<ConversationResponse>(
+          isSuccess: true,
+          data: ConversationResponse.fromJson(data),
+          statusCode: response.statusCode,
+        );
+      }
+
+      final errorData = jsonDecode(response.body) as Map<String, dynamic>?;
+      var errorMessage =
+          errorData?['message'] as String? ??
+          errorData?['error'] as String? ??
+          'Failed to send message';
+
+      if (response.statusCode == 402) {
+        errorMessage =
+            'Subscription required. You have exceeded the free tier limit. Please subscribe to continue.';
+      }
+
+      return ApiResponse<ConversationResponse>(
+        isSuccess: false,
+        error: errorMessage,
+        statusCode: response.statusCode,
+      );
+    } catch (e, stackTrace) {
+      debugPrint('[ApiClient] Error in sendTextMessage: $e');
+      debugPrint('[ApiClient] Stack trace: $stackTrace');
+      return ApiResponse<ConversationResponse>(
+        isSuccess: false,
+        error: e.toString(),
+      );
+    }
+  }
+
+  Future<ApiResponse<List<ConversationHistoryEntry>>> getConversationHistory({
+    int page = 1,
+    int limit = 20,
+  }) async {
+    try {
+      debugPrint('[ApiClient] Getting conversation history (page: $page)...');
+
+      final url = Uri.parse(ApiConstants.getUrl(ApiConstants.conversationHistory))
+          .replace(queryParameters: {'page': '$page', 'limit': '$limit'});
+
+      final headers = await _getHeaders(includeAuth: true);
+      final response = await http
+          .get(url, headers: headers)
+          .timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body) as Map<String, dynamic>;
+        final rows = (body['data'] as List<dynamic>?) ?? const [];
+        final entries = rows
+            .map((item) =>
+                ConversationHistoryEntry.fromJson(item as Map<String, dynamic>))
+            .toList();
+
+        return ApiResponse<List<ConversationHistoryEntry>>(
+          isSuccess: true,
+          data: entries,
+          statusCode: response.statusCode,
+        );
+      }
+
+      final errorData = jsonDecode(response.body) as Map<String, dynamic>?;
+      final errorMessage =
+          errorData?['message'] as String? ??
+          errorData?['error'] as String? ??
+          'Failed to get conversation history';
+
+      return ApiResponse<List<ConversationHistoryEntry>>(
+        isSuccess: false,
+        error: errorMessage,
+        statusCode: response.statusCode,
+      );
+    } catch (e, stackTrace) {
+      debugPrint('[ApiClient] Error in getConversationHistory: $e');
+      debugPrint('[ApiClient] Stack trace: $stackTrace');
+      return ApiResponse<List<ConversationHistoryEntry>>(
+        isSuccess: false,
+        error: e.toString(),
+      );
+    }
+  }
+
+  Future<ApiResponse<List<Song>>> getSongs({
+    int page = 1,
+    int limit = 20,
+    String? search,
+  }) async {
+    try {
+      debugPrint('[ApiClient] Getting songs (page: $page, search: $search)...');
+
+      final url = Uri.parse(ApiConstants.getUrl(ApiConstants.getSongs))
+          .replace(queryParameters: {
+        'page': '$page',
+        'limit': '$limit',
+        if (search != null && search.isNotEmpty) 'search': search,
+      });
+
+      final headers = await _getHeaders(includeAuth: true);
+      final response = await http
+          .get(url, headers: headers)
+          .timeout(const Duration(seconds: 30));
+
+      debugPrint('[ApiClient] Response status: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body) as Map<String, dynamic>;
+        final rows = (body['data'] as List<dynamic>?) ?? const [];
+        final songs = rows
+            .map((item) => Song.fromJson(item as Map<String, dynamic>))
+            .toList();
+
+        return ApiResponse<List<Song>>(
+          isSuccess: true,
+          data: songs,
+          statusCode: response.statusCode,
+        );
+      } else {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>?;
+        final errorMessage =
+            errorData?['message'] as String? ??
+            errorData?['error'] as String? ??
+            'Failed to get songs';
+
+        return ApiResponse<List<Song>>(
+          isSuccess: false,
+          error: errorMessage,
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e, stackTrace) {
+      debugPrint('[ApiClient] Error in getSongs: $e');
+      debugPrint('[ApiClient] Stack trace: $stackTrace');
+      return ApiResponse<List<Song>>(isSuccess: false, error: e.toString());
     }
   }
 

@@ -1,5 +1,7 @@
 # Testing Guide
 
+**Current status: 62 backend tests and 75 frontend tests, all passing.**
+
 ## Running Tests
 
 ### Backend (Node.js/TypeScript — Jest)
@@ -80,14 +82,36 @@ Located in `TalkToJesus-backend/src/__tests__/`
 
 **`services/subscription.service.test.ts`** — Subscription access and management
 - hasActiveSubscription: returns true for free tier (count < 3)
+- hasActiveSubscription: respects an admin-raised free tier limit
 - hasActiveSubscription: returns false when user exceeds free tier with no subscription
-- hasActiveSubscription: returns true for active subscription within access period
-- hasActiveSubscription: returns false for expired subscription
-- hasActiveSubscription: returns true for new subscription within grace period
+- hasActiveSubscription: returns true for an active subscription
+- hasActiveSubscription: prefers an active subscription over a stale created one
+- hasActiveSubscription: returns true for an authenticated subscription
+- hasActiveSubscription: returns true for a created subscription inside the 24h grace period
+- hasActiveSubscription: returns false for a created subscription past the grace period
 - hasActiveSubscription: returns false when user not found
 - getUserSubscription: returns the latest subscription
 - getUserSubscription: returns null when no subscription exists
 - incrementConversationCount: increments and returns the new count
+
+> Note: two of these previously failed. The cause was the local `mockQuery` helper
+> making only `.single()` awaitable, while `hasActiveSubscription` awaits the
+> subscriptions query builder directly to get an array. Every "expect false" case
+> was passing for the wrong reason. The chain is now thenable and the cases match
+> the current status-priority logic (`active`/`authenticated` grant access;
+> `created` gets a 24-hour grace period).
+
+**`middlewares/admin.middleware.test.ts`** — Admin route gate
+- Returns 401 when no user is attached to the request
+- Returns 404 when the user is not an admin
+- Returns 404 when is_admin is missing entirely
+- Rejects a truthy-but-not-true is_admin value
+- Calls next() for an admin user
+
+**`services/adminStats.service.test.ts`** — Dashboard analytics maths
+- percentile: null for empty set, single sample, odd/even medians, p95, no input mutation
+- computeMrrRupees: zero, paise→rupee conversion, summing, null-plan tolerance
+- computeConversionRate: zero-user guard, one-decimal rounding, 0% and 100% cases
 
 **`services/webhook.service.test.ts`** — Razorpay webhook event handling
 - Handles subscription.charged and sets last_charged_at
@@ -180,6 +204,22 @@ Located in `talktojesus-frontend/test/`
 - Versions list contains expected translations
 - Versions list has 6 entries
 - BibleBook can be constructed with name and totalChapters
+
+**`domain/models/user_model_test.dart`** (admin additions)
+- isAdmin defaults to false when the field is absent
+- isAdmin parses true from the backend
+- isAdmin survives a toJson/fromJson round-trip
+- copyWith can toggle isAdmin without touching other fields
+
+### Constants
+
+**`core/constants/app_strings_test.dart`** — Bilingual UI copy
+- Every English key has a Telugu translation (guards against drift)
+- Returns the translated string for each language
+- English and Telugu values actually differ
+- Falls back to the key itself for an unknown key
+- getAll returns a non-empty map for both languages
+- Covers the screens used in the demo flow
 
 ### Providers
 

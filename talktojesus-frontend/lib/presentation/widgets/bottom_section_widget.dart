@@ -80,15 +80,14 @@ class BottomSectionWidget extends StatelessWidget {
   Widget _buildNavigationButtons() {
     return Row(
       children: [
-        // TODO: Jesus Songs button temporarily commented out
-        // NavigationButton(
-        //   label: 'Jesus Songs',
-        //   iconPath: 'assets/svg/music.svg',
-        //   backgroundColor: AppColors.jesusSongsBackground,
-        //   onTap: onJesusSongsTap,
-        //   heroTag: 'jesus_songs_button',
-        // ),
-        // const SizedBox(width: 8),
+        NavigationButton(
+          label: 'Jesus Songs',
+          iconPath: 'assets/svg/music.svg',
+          backgroundColor: AppColors.jesusSongsBackground,
+          onTap: onJesusSongsTap,
+          heroTag: 'jesus_songs_button',
+        ),
+        const SizedBox(width: 8),
         NavigationButton(
           label: AppStrings.get('bible', currentLanguage),
           iconPath: 'assets/svg/bible.svg',
