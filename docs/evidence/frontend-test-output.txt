@@ -1,0 +1,77 @@
+00:00 +0: loading /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/constants/app_strings_test.dart
+00:00 +0: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/constants/app_strings_test.dart: AppStrings every English key has a Telugu translation
+00:00 +1: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/constants/app_strings_test.dart: AppStrings every English key has a Telugu translation
+00:00 +2: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppState has correct default values
+00:00 +3: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppState has correct default values
+00:00 +4: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppState has correct default values
+00:00 +5: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppState has correct default values
+00:00 +6: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppState has correct default values
+00:00 +7: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/conversation_response_test.dart: ConversationResponse fromJson/toJson round-trip
+00:00 +8: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/conversation_response_test.dart: ConversationResponse fromJson/toJson round-trip
+00:00 +9: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppState copyWith updates only specified fields
+00:00 +10: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/constants/app_strings_test.dart: AppStrings getAll returns a non-empty map for both languages
+00:00 +11: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppStateNotifier initial state has default values
+00:00 +12: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppStateNotifier initial state has default values
+00:00 +13: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppStateNotifier setLanguage updates the language
+00:00 +14: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppStateNotifier toggleHighContrastMode toggles the mode
+00:00 +15: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppStateNotifier setAudioPermission sets the permission flag
+00:00 +16: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppStateNotifier incrementCounter increases counter by 1
+00:00 +17: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppStateNotifier resetCounter sets counter back to 0
+00:00 +18: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppLanguage english has correct code and displayName
+00:00 +19: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/core/providers/app_state_provider_test.dart: AppLanguage telugu has correct code and displayName
+00:00 +20: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription fromJson parses all fields correctly
+00:00 +21: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription fromJson parses nested plan when present
+00:00 +22: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription toJson produces correct keys
+00:00 +23: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription toJson includes plan when present
+00:00 +24: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription isActive returns true for active status
+00:00 +25: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription isActive returns true for authenticated status
+00:00 +26: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription isActive returns false for cancelled status
+00:00 +27: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription isCancelled returns true for cancelled status
+00:00 +28: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription isPaused returns true for paused status
+00:00 +29: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/subscription_model_test.dart: Subscription isPastDue returns true for past_due status
+00:00 +30: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry toMap/fromMap round-trip preserves all fields
+00:00 +31: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry toMap/fromMap round-trip preserves all fields
+00:00 +32: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry toMap/fromMap round-trip preserves all fields
+00:00 +33: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry toMap/fromMap round-trip preserves all fields
+00:00 +34: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry fromMap handles missing optional fields with defaults
+00:00 +35: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry isExpired returns false for future expiry
+00:00 +36: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry isExpired returns true for past expiry
+00:00 +37: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry copyWithAccess increments access count
+00:00 +38: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: BibleCacheEntry copyWith updates only specified fields
+00:00 +39: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: ReadingPosition toMap/fromMap round-trip preserves all fields
+00:00 +40: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_cache_test.dart: ReadingPosition positionKey combines translationId and bookId
+00:00 +41: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/song_test.dart: Song copyWith updates specified fields only
+00:00 +42: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/song_test.dart: Song copyWith with no args returns equal copy
+00:00 +43: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/song_test.dart: Song equality works for identical songs
+00:00 +44: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/song_test.dart: Song equality fails for different songs
+00:00 +45: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/song_test.dart: Song hashCode is consistent for equal objects
+00:00 +46: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/song_test.dart: Song toString includes all fields
+00:00 +47: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/song_test.dart: Song handles null optional fields
+00:00 +48: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/user_model_test.dart: UserModel fromJson parses all fields correctly
+00:00 +49: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +50: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +51: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +52: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +53: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +54: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +55: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +56: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +57: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +58: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +59: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson parses all fields correctly
+00:00 +60: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/user_model_test.dart: CreateOrGetUserResponse fromJson parses nested user and token
+00:00 +61: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan toJson produces correct keys
+00:00 +62: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/user_model_test.dart: CreateOrGetUserResponse fromJson handles null token
+00:00 +63: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan fromJson/toJson round-trip preserves data
+00:00 +64: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan priceInRupees converts paise to rupees
+00:00 +65: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan priceInRupees handles fractional amounts
+00:00 +66: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan formattedPrice returns rupee symbol with amount
+00:00 +67: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/plan_model_test.dart: Plan formattedPrice truncates decimals
+00:00 +68: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_data_test.dart: BibleData books list is not empty
+00:00 +69: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_data_test.dart: BibleData Genesis is the first book with 50 chapters
+00:00 +70: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_data_test.dart: BibleData Psalms has 150 chapters
+00:00 +71: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_data_test.dart: BibleData all books have positive chapter counts
+00:00 +72: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_data_test.dart: BibleData versions list contains expected translations
+00:00 +73: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_data_test.dart: BibleData versions list has 6 entries
+00:00 +74: /Users/manish/CODE/rn-final-manish/talktojesus-frontend/test/domain/models/bible_data_test.dart: BibleBook can be constructed with name and totalChapters
+00:00 +75: All tests passed!

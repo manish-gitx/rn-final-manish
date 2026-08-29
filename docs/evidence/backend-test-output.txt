@@ -1,0 +1,199 @@
+
+> talktojesus-backend@1.0.0 test
+> jest --verbose --ci
+
+(node:16100) Warning: Failed to load the ES module: /Users/manish/CODE/rn-final-manish/TalkToJesus-backend/jest.config.ts. Make sure to set "type": "module" in the nearest package.json file or use the .mjs extension.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS src/__tests__/middlewares/admin.middleware.test.ts
+  Admin Middleware
+    ✓ should return 401 when no user is attached to the request (2 ms)
+    ✓ should return 404 when the user is not an admin
+    ✓ should return 404 when is_admin is missing entirely (1 ms)
+    ✓ should reject a truthy-but-not-true is_admin value
+    ✓ should call next() for an admin user
+
+PASS src/__tests__/middlewares/consoleAdmin.auth.test.ts
+  Console admin authentication
+    ✓ authenticates a console token without reading the users table (7 ms)
+    ✓ passes the admin gate once authenticated (2 ms)
+    ✓ rejects a console token once ADMIN_EMAIL is removed (1 ms)
+    ✓ does not let a forged claim through without a valid signature
+
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS src/__tests__/utils/jwt.test.ts
+  JWT Utility
+    signToken
+      ✓ should return a valid JWT string (5 ms)
+      ✓ should embed the payload in the token
+      ✓ should set expiration to 70 days (1 ms)
+    verifyToken
+      ✓ should return decoded payload for a valid token
+      ✓ should return null for an invalid token
+      ✓ should return null for a token signed with a different secret (1 ms)
+      ✓ should return null for an expired token
+
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS src/__tests__/services/webhook.service.test.ts
+  Webhook Service
+    ✓ should handle subscription.charged and set last_charged_at (4 ms)
+    ✓ should handle subscription.cancelled (1 ms)
+    ✓ should handle subscription.authenticated and set last_charged_at from current_start
+    ✓ should ignore non-subscription events gracefully
+    ✓ should handle missing subscription data in payload
+    ✓ should handle subscription.activated and set last_charged_at as fallback (1 ms)
+
+PASS src/__tests__/services/adminStats.service.test.ts
+  Admin Stats Service
+    percentile
+      ✓ returns null for an empty set (1 ms)
+      ✓ returns the only value for a single sample (1 ms)
+      ✓ computes the median of an odd-length set
+      ✓ interpolates the median of an even-length set
+      ✓ computes p95 near the top of the range
+      ✓ does not mutate the input array
+    computeMrrRupees
+      ✓ returns 0 with no subscriptions (1 ms)
+      ✓ converts paise to rupees
+      ✓ sums across subscriptions
+      ✓ treats a missing or null plan as zero rather than throwing
+    computeConversionRate
+      ✓ returns 0 when there are no users, without dividing by zero
+      ✓ computes a percentage to one decimal place
+      ✓ returns 100 when every user pays
+      ✓ returns 0 when nobody pays
+
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS src/__tests__/middlewares/auth.middleware.test.ts
+  Auth Middleware
+    ✓ should return 401 when no authorization header (5 ms)
+    ✓ should return 401 when authorization header is not Bearer
+    ✓ should return 401 when JWT token is invalid (1 ms)
+    ✓ should return 401 when user is not found in database (1 ms)
+    ✓ should set req.user and call next() on valid auth
+    ✓ should return 500 on unexpected error
+
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS src/__tests__/services/song.service.test.ts
+  Song Service
+    ✓ should return paginated songs with correct offset (6 ms)
+    ✓ should apply search filter when provided
+    ✓ should not apply search filter when not provided (1 ms)
+    ✓ should throw on database error (1 ms)
+    ✓ should calculate correct offset for first page (1 ms)
+
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+[32minfo[39m: Initializing Razorpay client {"environment":"test","isProduction":false,"key_id_prefix":"rzp_test","service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[32minfo[39m: Verifying Razorpay webhook signature {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[32minfo[39m: Webhook signature verified successfully {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[32minfo[39m: Verifying Razorpay webhook signature {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[33mwarn[39m: Invalid webhook signature {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[33mwarn[39m: Provided signature: 24a4922b277390f7c7266d5ca00a323541dc67d3e9d654561468075f0c0dd389 {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[33mwarn[39m: Expected signature: 7bf4f08fc5329a6decb49bbbfd18f1ecd903c741801eb385eaa613bca8014ceb {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[32minfo[39m: Verifying Razorpay webhook signature {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[33mwarn[39m: Webhook signature length mismatch {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[32minfo[39m: Verifying Razorpay webhook signature {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[33mwarn[39m: Invalid webhook signature {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[33mwarn[39m: Provided signature: 7bf4f08fc5329a6decb49bbbfd18f1ecd903c741801eb385eaa613bca8014ceb {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+[33mwarn[39m: Expected signature: 3ac725a5212123df20df2938649bb64950a3428c4ef691c88c4571f45ff9aa1b {"service":"talk-to-jesus-api","timestamp":"2026-08-30 03:11:53"}
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS src/__tests__/utils/razorpay.test.ts
+  Razorpay Utility
+    verifyWebhookSignature
+      ✓ should return true for a valid signature (3 ms)
+      ✓ should return false for an invalid signature
+      ✓ should return false for a signature with wrong length (1 ms)
+      ✓ should return false for tampered body
+
+  console.log
+    [dotenv@17.2.3] injecting env (14) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS src/__tests__/services/subscription.service.test.ts
+  Subscription Service
+    hasActiveSubscription
+      ✓ should return true when user is within free tier (count < 3) (3 ms)
+      ✓ should respect a custom free tier limit
+      ✓ should return false when user exceeds free tier and has no subscription
+      ✓ should return true for an active subscription (6 ms)
+      ✓ should prefer an active subscription over a stale created one (1 ms)
+      ✓ should return true for an authenticated subscription (1 ms)
+      ✓ should return true for a created subscription inside the 24h grace period
+      ✓ should return false for a created subscription past the 24h grace period
+      ✓ should return false when user not found
+    getUserSubscription
+      ✓ should return the latest subscription (1 ms)
+      ✓ should return null when no subscription exists
+    incrementConversationCount
+      ✓ should increment and return the new count
+
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS src/__tests__/services/auth.service.test.ts
+  Auth Service
+    ✓ should create a new user when not found in DB (3 ms)
+    ✓ should return existing user and update last_login_at (2 ms)
+    ✓ should throw on invalid Google token (3 ms)
+
+Test Suites: 10 passed, 10 total
+Tests:       66 passed, 66 total
+Snapshots:   0 total
+Time:        2.045 s
+Ran all test suites.

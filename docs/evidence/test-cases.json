@@ -1,0 +1,1130 @@
+[
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/admin.middleware.test.ts",
+    "group": "Admin Middleware",
+    "name": "should return 401 when no user is attached to the request",
+    "status": "Pass",
+    "id": "BE-001"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/admin.middleware.test.ts",
+    "group": "Admin Middleware",
+    "name": "should return 404 when the user is not an admin",
+    "status": "Pass",
+    "id": "BE-002"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/admin.middleware.test.ts",
+    "group": "Admin Middleware",
+    "name": "should return 404 when is_admin is missing entirely",
+    "status": "Pass",
+    "id": "BE-003"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/admin.middleware.test.ts",
+    "group": "Admin Middleware",
+    "name": "should reject a truthy-but-not-true is_admin value",
+    "status": "Pass",
+    "id": "BE-004"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/admin.middleware.test.ts",
+    "group": "Admin Middleware",
+    "name": "should call next() for an admin user",
+    "status": "Pass",
+    "id": "BE-005"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/consoleAdmin.auth.test.ts",
+    "group": "Console admin authentication",
+    "name": "authenticates a console token without reading the users table",
+    "status": "Pass",
+    "id": "BE-006"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/consoleAdmin.auth.test.ts",
+    "group": "Console admin authentication",
+    "name": "passes the admin gate once authenticated",
+    "status": "Pass",
+    "id": "BE-007"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/consoleAdmin.auth.test.ts",
+    "group": "Console admin authentication",
+    "name": "rejects a console token once ADMIN_EMAIL is removed",
+    "status": "Pass",
+    "id": "BE-008"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/consoleAdmin.auth.test.ts",
+    "group": "Console admin authentication",
+    "name": "does not let a forged claim through without a valid signature",
+    "status": "Pass",
+    "id": "BE-009"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/jwt.test.ts",
+    "group": "JWT Utility › signToken",
+    "name": "should return a valid JWT string",
+    "status": "Pass",
+    "id": "BE-010"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/jwt.test.ts",
+    "group": "JWT Utility › signToken",
+    "name": "should embed the payload in the token",
+    "status": "Pass",
+    "id": "BE-011"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/jwt.test.ts",
+    "group": "JWT Utility › signToken",
+    "name": "should set expiration to 70 days",
+    "status": "Pass",
+    "id": "BE-012"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/jwt.test.ts",
+    "group": "JWT Utility › verifyToken",
+    "name": "should return decoded payload for a valid token",
+    "status": "Pass",
+    "id": "BE-013"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/jwt.test.ts",
+    "group": "JWT Utility › verifyToken",
+    "name": "should return null for an invalid token",
+    "status": "Pass",
+    "id": "BE-014"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/jwt.test.ts",
+    "group": "JWT Utility › verifyToken",
+    "name": "should return null for a token signed with a different secret",
+    "status": "Pass",
+    "id": "BE-015"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/jwt.test.ts",
+    "group": "JWT Utility › verifyToken",
+    "name": "should return null for an expired token",
+    "status": "Pass",
+    "id": "BE-016"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/webhook.service.test.ts",
+    "group": "Webhook Service",
+    "name": "should handle subscription.charged and set last_charged_at",
+    "status": "Pass",
+    "id": "BE-017"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/webhook.service.test.ts",
+    "group": "Webhook Service",
+    "name": "should handle subscription.cancelled",
+    "status": "Pass",
+    "id": "BE-018"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/webhook.service.test.ts",
+    "group": "Webhook Service",
+    "name": "should handle subscription.authenticated and set last_charged_at from current_start",
+    "status": "Pass",
+    "id": "BE-019"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/webhook.service.test.ts",
+    "group": "Webhook Service",
+    "name": "should ignore non-subscription events gracefully",
+    "status": "Pass",
+    "id": "BE-020"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/webhook.service.test.ts",
+    "group": "Webhook Service",
+    "name": "should handle missing subscription data in payload",
+    "status": "Pass",
+    "id": "BE-021"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/webhook.service.test.ts",
+    "group": "Webhook Service",
+    "name": "should handle subscription.activated and set last_charged_at as fallback",
+    "status": "Pass",
+    "id": "BE-022"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › percentile",
+    "name": "returns null for an empty set",
+    "status": "Pass",
+    "id": "BE-023"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › percentile",
+    "name": "returns the only value for a single sample",
+    "status": "Pass",
+    "id": "BE-024"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › percentile",
+    "name": "computes the median of an odd-length set",
+    "status": "Pass",
+    "id": "BE-025"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › percentile",
+    "name": "interpolates the median of an even-length set",
+    "status": "Pass",
+    "id": "BE-026"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › percentile",
+    "name": "computes p95 near the top of the range",
+    "status": "Pass",
+    "id": "BE-027"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › percentile",
+    "name": "does not mutate the input array",
+    "status": "Pass",
+    "id": "BE-028"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › computeMrrRupees",
+    "name": "returns 0 with no subscriptions",
+    "status": "Pass",
+    "id": "BE-029"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › computeMrrRupees",
+    "name": "converts paise to rupees",
+    "status": "Pass",
+    "id": "BE-030"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › computeMrrRupees",
+    "name": "sums across subscriptions",
+    "status": "Pass",
+    "id": "BE-031"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › computeMrrRupees",
+    "name": "treats a missing or null plan as zero rather than throwing",
+    "status": "Pass",
+    "id": "BE-032"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › computeConversionRate",
+    "name": "returns 0 when there are no users, without dividing by zero",
+    "status": "Pass",
+    "id": "BE-033"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › computeConversionRate",
+    "name": "computes a percentage to one decimal place",
+    "status": "Pass",
+    "id": "BE-034"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › computeConversionRate",
+    "name": "returns 100 when every user pays",
+    "status": "Pass",
+    "id": "BE-035"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/adminStats.service.test.ts",
+    "group": "Admin Stats Service › computeConversionRate",
+    "name": "returns 0 when nobody pays",
+    "status": "Pass",
+    "id": "BE-036"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/auth.middleware.test.ts",
+    "group": "Auth Middleware",
+    "name": "should return 401 when no authorization header",
+    "status": "Pass",
+    "id": "BE-037"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/auth.middleware.test.ts",
+    "group": "Auth Middleware",
+    "name": "should return 401 when authorization header is not Bearer",
+    "status": "Pass",
+    "id": "BE-038"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/auth.middleware.test.ts",
+    "group": "Auth Middleware",
+    "name": "should return 401 when JWT token is invalid",
+    "status": "Pass",
+    "id": "BE-039"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/auth.middleware.test.ts",
+    "group": "Auth Middleware",
+    "name": "should return 401 when user is not found in database",
+    "status": "Pass",
+    "id": "BE-040"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/auth.middleware.test.ts",
+    "group": "Auth Middleware",
+    "name": "should set req.user and call next() on valid auth",
+    "status": "Pass",
+    "id": "BE-041"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/middlewares/auth.middleware.test.ts",
+    "group": "Auth Middleware",
+    "name": "should return 500 on unexpected error",
+    "status": "Pass",
+    "id": "BE-042"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/song.service.test.ts",
+    "group": "Song Service",
+    "name": "should return paginated songs with correct offset",
+    "status": "Pass",
+    "id": "BE-043"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/song.service.test.ts",
+    "group": "Song Service",
+    "name": "should apply search filter when provided",
+    "status": "Pass",
+    "id": "BE-044"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/song.service.test.ts",
+    "group": "Song Service",
+    "name": "should not apply search filter when not provided",
+    "status": "Pass",
+    "id": "BE-045"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/song.service.test.ts",
+    "group": "Song Service",
+    "name": "should throw on database error",
+    "status": "Pass",
+    "id": "BE-046"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/song.service.test.ts",
+    "group": "Song Service",
+    "name": "should calculate correct offset for first page",
+    "status": "Pass",
+    "id": "BE-047"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/razorpay.test.ts",
+    "group": "Razorpay Utility › verifyWebhookSignature",
+    "name": "should return true for a valid signature",
+    "status": "Pass",
+    "id": "BE-048"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/razorpay.test.ts",
+    "group": "Razorpay Utility › verifyWebhookSignature",
+    "name": "should return false for an invalid signature",
+    "status": "Pass",
+    "id": "BE-049"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/razorpay.test.ts",
+    "group": "Razorpay Utility › verifyWebhookSignature",
+    "name": "should return false for a signature with wrong length",
+    "status": "Pass",
+    "id": "BE-050"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/utils/razorpay.test.ts",
+    "group": "Razorpay Utility › verifyWebhookSignature",
+    "name": "should return false for tampered body",
+    "status": "Pass",
+    "id": "BE-051"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should return true when user is within free tier (count < 3)",
+    "status": "Pass",
+    "id": "BE-052"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should respect a custom free tier limit",
+    "status": "Pass",
+    "id": "BE-053"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should return false when user exceeds free tier and has no subscription",
+    "status": "Pass",
+    "id": "BE-054"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should return true for an active subscription",
+    "status": "Pass",
+    "id": "BE-055"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should prefer an active subscription over a stale created one",
+    "status": "Pass",
+    "id": "BE-056"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should return true for an authenticated subscription",
+    "status": "Pass",
+    "id": "BE-057"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should return true for a created subscription inside the 24h grace period",
+    "status": "Pass",
+    "id": "BE-058"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should return false for a created subscription past the 24h grace period",
+    "status": "Pass",
+    "id": "BE-059"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › hasActiveSubscription",
+    "name": "should return false when user not found",
+    "status": "Pass",
+    "id": "BE-060"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › getUserSubscription",
+    "name": "should return the latest subscription",
+    "status": "Pass",
+    "id": "BE-061"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › getUserSubscription",
+    "name": "should return null when no subscription exists",
+    "status": "Pass",
+    "id": "BE-062"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/subscription.service.test.ts",
+    "group": "Subscription Service › incrementConversationCount",
+    "name": "should increment and return the new count",
+    "status": "Pass",
+    "id": "BE-063"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/auth.service.test.ts",
+    "group": "Auth Service",
+    "name": "should create a new user when not found in DB",
+    "status": "Pass",
+    "id": "BE-064"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/auth.service.test.ts",
+    "group": "Auth Service",
+    "name": "should return existing user and update last_login_at",
+    "status": "Pass",
+    "id": "BE-065"
+  },
+  {
+    "tier": "backend",
+    "file": "src/__tests__/services/auth.service.test.ts",
+    "group": "Auth Service",
+    "name": "should throw on invalid Google token",
+    "status": "Pass",
+    "id": "BE-066"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/constants/app_strings_test.dart",
+    "group": "",
+    "name": "AppStrings every English key has a Telugu translation",
+    "status": "Pass",
+    "id": "FE-001"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/conversation_response_test.dart",
+    "group": "",
+    "name": "ConversationResponse fromJson parses all fields",
+    "status": "Pass",
+    "id": "FE-002"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/constants/app_strings_test.dart",
+    "group": "",
+    "name": "AppStrings returns the translated string for each language",
+    "status": "Pass",
+    "id": "FE-003"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/conversation_response_test.dart",
+    "group": "",
+    "name": "ConversationResponse fromJson handles null/missing fields with defaults",
+    "status": "Pass",
+    "id": "FE-004"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/constants/app_strings_test.dart",
+    "group": "",
+    "name": "AppStrings English and Telugu values actually differ",
+    "status": "Pass",
+    "id": "FE-005"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/conversation_response_test.dart",
+    "group": "",
+    "name": "ConversationResponse toJson produces snake_case keys",
+    "status": "Pass",
+    "id": "FE-006"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/constants/app_strings_test.dart",
+    "group": "",
+    "name": "AppStrings falls back to the key itself for an unknown key",
+    "status": "Pass",
+    "id": "FE-007"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/conversation_response_test.dart",
+    "group": "",
+    "name": "ConversationResponse fromJson/toJson round-trip",
+    "status": "Pass",
+    "id": "FE-008"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/constants/app_strings_test.dart",
+    "group": "",
+    "name": "AppStrings getAll returns a non-empty map for both languages",
+    "status": "Pass",
+    "id": "FE-009"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/constants/app_strings_test.dart",
+    "group": "",
+    "name": "AppStrings covers the screens used in the demo flow",
+    "status": "Pass",
+    "id": "FE-010"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppState has correct default values",
+    "status": "Pass",
+    "id": "FE-011"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppState copyWith updates only specified fields",
+    "status": "Pass",
+    "id": "FE-012"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppStateNotifier initial state has default values",
+    "status": "Pass",
+    "id": "FE-013"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppStateNotifier setLanguage updates the language",
+    "status": "Pass",
+    "id": "FE-014"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppStateNotifier toggleHighContrastMode toggles the mode",
+    "status": "Pass",
+    "id": "FE-015"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppStateNotifier setAudioPermission sets the permission flag",
+    "status": "Pass",
+    "id": "FE-016"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppStateNotifier incrementCounter increases counter by 1",
+    "status": "Pass",
+    "id": "FE-017"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppStateNotifier resetCounter sets counter back to 0",
+    "status": "Pass",
+    "id": "FE-018"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppLanguage english has correct code and displayName",
+    "status": "Pass",
+    "id": "FE-019"
+  },
+  {
+    "tier": "frontend",
+    "file": "core/providers/app_state_provider_test.dart",
+    "group": "",
+    "name": "AppLanguage telugu has correct code and displayName",
+    "status": "Pass",
+    "id": "FE-020"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_cache_test.dart",
+    "group": "",
+    "name": "BibleCacheEntry toMap/fromMap round-trip preserves all fields",
+    "status": "Pass",
+    "id": "FE-021"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription fromJson parses all fields correctly",
+    "status": "Pass",
+    "id": "FE-022"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_cache_test.dart",
+    "group": "",
+    "name": "BibleCacheEntry fromMap handles missing optional fields with defaults",
+    "status": "Pass",
+    "id": "FE-023"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_cache_test.dart",
+    "group": "",
+    "name": "BibleCacheEntry isExpired returns false for future expiry",
+    "status": "Pass",
+    "id": "FE-024"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_cache_test.dart",
+    "group": "",
+    "name": "BibleCacheEntry isExpired returns true for past expiry",
+    "status": "Pass",
+    "id": "FE-025"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_cache_test.dart",
+    "group": "",
+    "name": "BibleCacheEntry copyWithAccess increments access count",
+    "status": "Pass",
+    "id": "FE-026"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_cache_test.dart",
+    "group": "",
+    "name": "BibleCacheEntry copyWith updates only specified fields",
+    "status": "Pass",
+    "id": "FE-027"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription fromJson parses nested plan when present",
+    "status": "Pass",
+    "id": "FE-028"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_cache_test.dart",
+    "group": "",
+    "name": "ReadingPosition toMap/fromMap round-trip preserves all fields",
+    "status": "Pass",
+    "id": "FE-029"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_cache_test.dart",
+    "group": "",
+    "name": "ReadingPosition positionKey combines translationId and bookId",
+    "status": "Pass",
+    "id": "FE-030"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription toJson produces correct keys",
+    "status": "Pass",
+    "id": "FE-031"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription toJson includes plan when present",
+    "status": "Pass",
+    "id": "FE-032"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription isActive returns true for active status",
+    "status": "Pass",
+    "id": "FE-033"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription isActive returns true for authenticated status",
+    "status": "Pass",
+    "id": "FE-034"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription isActive returns false for cancelled status",
+    "status": "Pass",
+    "id": "FE-035"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription isCancelled returns true for cancelled status",
+    "status": "Pass",
+    "id": "FE-036"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription isPaused returns true for paused status",
+    "status": "Pass",
+    "id": "FE-037"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "Subscription isPastDue returns true for past_due status",
+    "status": "Pass",
+    "id": "FE-038"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "CreateSubscriptionResponse shortUrl returns value from razorpaySubscription",
+    "status": "Pass",
+    "id": "FE-039"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "CreateSubscriptionResponse shortUrl returns null when razorpaySubscription is null",
+    "status": "Pass",
+    "id": "FE-040"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/subscription_model_test.dart",
+    "group": "",
+    "name": "CurrentSubscriptionResponse fromJson handles null subscription",
+    "status": "Pass",
+    "id": "FE-041"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel fromJson parses all fields correctly",
+    "status": "Pass",
+    "id": "FE-042"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel fromJson handles null optional fields",
+    "status": "Pass",
+    "id": "FE-043"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel toJson produces correct snake_case keys",
+    "status": "Pass",
+    "id": "FE-044"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel fromJson/toJson round-trip preserves data",
+    "status": "Pass",
+    "id": "FE-045"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel copyWith creates a new instance with updated fields",
+    "status": "Pass",
+    "id": "FE-046"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel isAdmin defaults to false when the field is absent",
+    "status": "Pass",
+    "id": "FE-047"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel isAdmin parses true from the backend",
+    "status": "Pass",
+    "id": "FE-048"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel isAdmin survives a toJson/fromJson round-trip",
+    "status": "Pass",
+    "id": "FE-049"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel copyWith can toggle isAdmin without touching other fields",
+    "status": "Pass",
+    "id": "FE-050"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel isTester returns true for tester user ID",
+    "status": "Pass",
+    "id": "FE-051"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "UserModel isTester returns false for regular user",
+    "status": "Pass",
+    "id": "FE-052"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "CreateOrGetUserResponse fromJson parses nested user and token",
+    "status": "Pass",
+    "id": "FE-053"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/user_model_test.dart",
+    "group": "",
+    "name": "CreateOrGetUserResponse fromJson handles null token",
+    "status": "Pass",
+    "id": "FE-054"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_data_test.dart",
+    "group": "",
+    "name": "BibleData books list is not empty",
+    "status": "Pass",
+    "id": "FE-055"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_data_test.dart",
+    "group": "",
+    "name": "BibleData Genesis is the first book with 50 chapters",
+    "status": "Pass",
+    "id": "FE-056"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_data_test.dart",
+    "group": "",
+    "name": "BibleData Psalms has 150 chapters",
+    "status": "Pass",
+    "id": "FE-057"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_data_test.dart",
+    "group": "",
+    "name": "BibleData all books have positive chapter counts",
+    "status": "Pass",
+    "id": "FE-058"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_data_test.dart",
+    "group": "",
+    "name": "BibleData versions list contains expected translations",
+    "status": "Pass",
+    "id": "FE-059"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_data_test.dart",
+    "group": "",
+    "name": "BibleData versions list has 6 entries",
+    "status": "Pass",
+    "id": "FE-060"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/bible_data_test.dart",
+    "group": "",
+    "name": "BibleBook can be constructed with name and totalChapters",
+    "status": "Pass",
+    "id": "FE-061"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/song_test.dart",
+    "group": "",
+    "name": "Song copyWith updates specified fields only",
+    "status": "Pass",
+    "id": "FE-062"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/song_test.dart",
+    "group": "",
+    "name": "Song copyWith with no args returns equal copy",
+    "status": "Pass",
+    "id": "FE-063"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/song_test.dart",
+    "group": "",
+    "name": "Song equality works for identical songs",
+    "status": "Pass",
+    "id": "FE-064"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/song_test.dart",
+    "group": "",
+    "name": "Song equality fails for different songs",
+    "status": "Pass",
+    "id": "FE-065"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/song_test.dart",
+    "group": "",
+    "name": "Song hashCode is consistent for equal objects",
+    "status": "Pass",
+    "id": "FE-066"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/song_test.dart",
+    "group": "",
+    "name": "Song toString includes all fields",
+    "status": "Pass",
+    "id": "FE-067"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/song_test.dart",
+    "group": "",
+    "name": "Song handles null optional fields",
+    "status": "Pass",
+    "id": "FE-068"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/plan_model_test.dart",
+    "group": "",
+    "name": "Plan fromJson parses all fields correctly",
+    "status": "Pass",
+    "id": "FE-069"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/plan_model_test.dart",
+    "group": "",
+    "name": "Plan toJson produces correct keys",
+    "status": "Pass",
+    "id": "FE-070"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/plan_model_test.dart",
+    "group": "",
+    "name": "Plan fromJson/toJson round-trip preserves data",
+    "status": "Pass",
+    "id": "FE-071"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/plan_model_test.dart",
+    "group": "",
+    "name": "Plan priceInRupees converts paise to rupees",
+    "status": "Pass",
+    "id": "FE-072"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/plan_model_test.dart",
+    "group": "",
+    "name": "Plan priceInRupees handles fractional amounts",
+    "status": "Pass",
+    "id": "FE-073"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/plan_model_test.dart",
+    "group": "",
+    "name": "Plan formattedPrice returns rupee symbol with amount",
+    "status": "Pass",
+    "id": "FE-074"
+  },
+  {
+    "tier": "frontend",
+    "file": "domain/models/plan_model_test.dart",
+    "group": "",
+    "name": "Plan formattedPrice truncates decimals",
+    "status": "Pass",
+    "id": "FE-075"
+  }
+]

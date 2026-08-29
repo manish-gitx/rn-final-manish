@@ -43,3 +43,6 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
+
+# Generated documentation build artefacts
+docs/.build/
