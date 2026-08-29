@@ -21,7 +21,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / "docs" / "src"
-OUT = ROOT / "deliverables"
+OUT = ROOT / "deliverables" / "docx"
+PDF_OUT = ROOT / "deliverables" / "pdf"
 BUILD = ROOT / "docs" / ".build"
 REFERENCE = ROOT / "docs" / "reference.docx"
 
@@ -125,11 +126,12 @@ def pandoc(markdown: str, output: Path, toc: bool) -> None:
 
 
 def to_pdf(docx: Path) -> None:
+    PDF_OUT.mkdir(parents=True, exist_ok=True)
     subprocess.run(
-        ["soffice", "--headless", "--convert-to", "pdf", "--outdir", str(OUT), str(docx)],
+        ["soffice", "--headless", "--convert-to", "pdf", "--outdir", str(PDF_OUT), str(docx)],
         check=True, capture_output=True, cwd=ROOT,
     )
-    pdf = docx.with_suffix(".pdf")
+    pdf = PDF_OUT / (docx.stem + ".pdf")
     if pdf.exists():
         print(f"  {pdf.relative_to(ROOT)}  ({pdf.stat().st_size // 1024} KB)")
 

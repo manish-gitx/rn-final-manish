@@ -18,7 +18,7 @@ from pptx.util import Emu, Inches, Pt
 ROOT = Path(__file__).resolve().parents[2]
 TEMPLATE = ROOT / "Capstone_Project_15_Min_Demo_Template (1).pptx"
 FIGURES = ROOT / "docs" / "figures"
-OUT = ROOT / "deliverables" / "09-TalkToJesus-Capstone-Final.pptx"
+OUT = ROOT / "deliverables" / "ppt" / "09-TalkToJesus-Capstone-Final.pptx"
 
 BODY_TOP = Inches(1.55)          # the template's body starts at 2.00in; tightened
 BODY_HEIGHT = Inches(5.25)

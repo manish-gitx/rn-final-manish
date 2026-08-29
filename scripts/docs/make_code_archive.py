@@ -31,7 +31,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "deliverables" / "03-TalkToJesus-Source-Code.zip"
+OUT = ROOT / "deliverables" / "other" / "03-TalkToJesus-Source-Code.zip"
 STAGE_NAME = "TalkToJesus-2023EBCS668"
 
 # Tracked paths that must never enter the archive.

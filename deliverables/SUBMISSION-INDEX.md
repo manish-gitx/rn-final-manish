@@ -6,28 +6,39 @@ Repository: https://github.com/manish-gitx/rn-final-manish
 
 Mapped against the supervisor's twelve-point viva checklist.
 
+## Folder layout
+
+```
+deliverables/
+  SUBMISSION-INDEX.md    this file
+  docx/                  editable Word documents (items 1, 2, 5, 6, 7, 8)
+  pdf/                   PDF exports of everything, including the deck
+  ppt/                   the presentation (item 9)
+  other/                 code archive, link files, and posters/
+```
+
 ## Checklist status
 
 | # | Checklist item | Deliverable | Status | Drive link |
 |---|---|---|---|---|
-| 1 | Project report, signed by supervisor | `01-Final-Project-Report.docx` / `.pdf` (103 pp) | Ready — **needs signature** | — |
-| 2 | Summary with UVP, uploaded to shared drive | `02-Project-Summary.docx` / `.pdf` (8 pp) | Ready | _paste public link_ |
-| 3 | Code submission (zip) | `03-TalkToJesus-Source-Code.zip` (376 files, 27 MB) | Ready — credentials removed | _paste public link_ |
-| 4 | Source code link (GitHub) in a `.txt` | `04-Source-Code-Link.txt` | Ready | _paste public link_ |
-| 5 | Test cases and validation report | `05-Test-and-Validation-Report.docx` / `.pdf` (39 pp), and Chapter 3 of the report | Ready | — |
-| 6 | Plagiarism compliance | `06-Plagiarism-Compliance.docx` / `.pdf` | Ready — **needs supervisor signature** | — |
-| 7 | User manual | `07-User-Manual.docx` / `.pdf` (12 pp), and Appendix A | Ready | — |
-| 8 | Installation guide | `08-Installation-Guide.docx` / `.pdf` (12 pp), and Appendix B | Ready | — |
-| 9 | Final presentation, BITS template | `09-TalkToJesus-Capstone-Final.pptx` / `.pdf` (10 slides) | Ready | — |
-| 10 | Demo video link | `10-Demo-Video-Links.txt` | Ready — links verified public | already public |
+| 1 | Project report, signed by supervisor | `docx/01-Final-Project-Report.docx` · `pdf/…pdf` (103 pp) | Ready — **needs signature** | — |
+| 2 | Summary with UVP, uploaded to shared drive | `docx/02-Project-Summary.docx` · `pdf/…pdf` (8 pp) | Ready | _paste public link_ |
+| 3 | Code submission (zip) | `other/03-TalkToJesus-Source-Code.zip` (376 files, 27 MB) | Ready — credentials removed | _paste public link_ |
+| 4 | Source code link (GitHub) in a `.txt` | `other/04-Source-Code-Link.txt` | Ready | _paste public link_ |
+| 5 | Test cases and validation report | `docx/05-Test-and-Validation-Report.docx` · `pdf/…pdf` (39 pp), and Chapter 3 of the report | Ready | — |
+| 6 | Plagiarism compliance | `docx/06-Plagiarism-Compliance.docx` · `pdf/…pdf` | Ready — **needs supervisor signature** | — |
+| 7 | User manual | `docx/07-User-Manual.docx` · `pdf/…pdf` (12 pp), and Appendix A | Ready | — |
+| 8 | Installation guide | `docx/08-Installation-Guide.docx` · `pdf/…pdf` (12 pp), and Appendix B | Ready | — |
+| 9 | Final presentation, BITS template | `ppt/09-TalkToJesus-Capstone-Final.pptx` · `pdf/…pdf` (10 slides) | Ready | — |
+| 10 | Demo video link | `other/10-Demo-Video-Links.txt` | Ready — links verified public | already public |
 | 11 | Marketing videos | — | **Not applicable** — see note below | — |
-| 12 | Social media posters | `posters/` — 5 PNGs | Ready | _paste public link_ |
+| 12 | Social media posters | `other/posters/` — 5 PNGs | Ready | _paste public link_ |
 
 The checklist asks that items **2, 3, 4, 10, 11 and 12** be kept in Drive as public links and sent by email. Of the ones now in scope, that means **2, 3, 4, 10 and 12**.
 
 ## Before you submit
 
-- [ ] **Sign the report.** `01-Final-Project-Report.docx` — the certificate page after the cover. The viva will not be conducted without the supervisor's signature.
+- [ ] **Sign the report.** `docx/01-Final-Project-Report.docx` — the certificate page after the cover. The viva will not be conducted without the supervisor's signature.
 - [ ] **Get the plagiarism declaration counter-signed** by your supervisor (`06`, Section 1).
 - [ ] **Upload 02, 04 and 10 to Drive**, set each to "anyone with the link", and paste the links into the table above.
 - [ ] **Read `SECURITY-NOTE.txt` inside the code archive.** It records what was excluded and which three credentials were redacted from source. Rotate all three — the tester JWT, the PostHog key and the Sentry DSN — since they were previously public on GitHub.
@@ -42,7 +53,7 @@ about the application. For a Telugu-speaking devotional audience reached through
 congregations, that is a more direct channel than a social media video, and it is the
 reason this item is recorded as not applicable rather than incomplete.
 
-Posters (item 12) were produced and are in `posters/`:
+Posters (item 12) were produced and are in `other/posters/`:
 
 | File | Size | Leads on |
 |---|---|---|

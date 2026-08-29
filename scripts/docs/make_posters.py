@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Marketing poster generator for TalkToJesus.
 
-Produces a set of print-quality PNG posters in ``deliverables/posters/`` that
+Produces a set of print-quality PNG posters in ``deliverables/other/posters/`` that
 match the visual identity of the shipped app: a soft luminous warm-amber halo
 against a dusty lavender-mauve field, frosted-glass panels, serif display type
 and a clean geometric sans for body copy.
@@ -50,7 +50,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
 FIGURES = ROOT / "docs" / "figures"
-OUT_DIR = ROOT / "deliverables" / "posters"
+OUT_DIR = ROOT / "deliverables" / "other" / "posters"
 
 CREDIT = "A BITS Pilani capstone project by Manish Rachakonda"
 APP_NAME = "TalkToJesus"
