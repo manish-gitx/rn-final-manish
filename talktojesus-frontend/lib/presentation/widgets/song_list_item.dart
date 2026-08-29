@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/models/song.dart';
+import '../../core/utils/song_artwork.dart';
 import '../../core/constants/text_styles.dart';
 import '../../core/accessibility/accessibility_utils.dart';
 
@@ -40,8 +41,8 @@ class SongListItem extends StatelessWidget {
               child: song.imageUrl != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        song.imageUrl!,
+                      child: Image(
+                        image: songImageProvider(song.imageUrl!),
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             const Icon(Icons.music_note, color: Colors.grey),

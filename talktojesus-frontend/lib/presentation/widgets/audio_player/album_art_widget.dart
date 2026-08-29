@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/audio_player_constants.dart';
+import '../../../core/utils/song_artwork.dart';
 
 class AlbumArtWidget extends StatelessWidget {
   final String? imageUrl;
@@ -23,7 +24,7 @@ class AlbumArtWidget extends StatelessWidget {
         ),
         image: imageUrl != null
             ? DecorationImage(
-                image: NetworkImage(imageUrl!),
+                image: songImageProvider(imageUrl!),
                 fit: BoxFit.cover,
               )
             : null,

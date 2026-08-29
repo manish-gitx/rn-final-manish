@@ -23,13 +23,41 @@ import { listWebhookEvents } from '../services/webhookEvent.service';
 import { listFeatureFlags, setFeatureFlag } from '../services/featureFlag.service';
 import { supabase } from '../../config/supabase';
 import { signToken } from '../../utils/jwt';
+import { buildConsoleAdmin, CONSOLE_ADMIN_ID, CONSOLE_ADMIN_CLAIM } from '../../config/consoleAdmin';
 import logger from '../../utils/logger';
 
 const parsePage = (value: unknown) => Math.max(1, Number(value) || 1);
 const parseLimit = (value: unknown, max = 100, fallback = 20) =>
     Math.min(max, Math.max(1, Number(value) || fallback));
 
+/**
+ * Postgres/PostgREST codes meaning "the object isn't there", as opposed to a
+ * query that genuinely failed:
+ *   PGRST205 - table absent from PostgREST's schema cache
+ *   42P01    - undefined_table
+ *   42703    - undefined_column  (users.is_admin before the migration)
+ */
+const SCHEMA_MISSING_CODES = new Set(['PGRST205', '42P01', '42703']);
+
 const fail = (res: Response, error: any, message: string) => {
+    // Distinguish "supabase-admin-setup.sql was never run" from a real fault.
+    // Without this the console shows raw Postgres text on half its panels and
+    // reads as broken, when the fix is a one-off migration.
+    if (SCHEMA_MISSING_CODES.has(error?.code)) {
+        logger.warn('Admin request hit an unprovisioned schema object', {
+            message,
+            code: error.code,
+            details: error?.message,
+        });
+        return res.status(503).json({
+            error: 'Admin schema not provisioned',
+            code: 'SCHEMA_NOT_PROVISIONED',
+            setup_required: true,
+            hint: 'Run supabase-admin-setup.sql (or admin-bootstrap.sql) in the Supabase SQL editor.',
+            details: error?.message,
+        });
+    }
+
     logger.error(message, { error });
     return res.status(500).json({ error: message, details: error?.message });
 };
@@ -75,26 +103,13 @@ export const adminLoginHandler = async (req: AuthenticatedRequest, res: Response
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const { data: user, error } = await supabase
-            .from('users')
-            .select('id, email, display_name, is_admin')
-            .eq('email', expectedEmail)
-            .single();
-
-        if (error || !user) {
-            logger.error('Admin login: configured email has no user row', { error });
-            return res.status(401).json({
-                error: 'No user account exists for the configured admin email',
-            });
-        }
-
-        if (user.is_admin !== true) {
-            logger.warn('Admin login: user exists but is_admin is false', { userId: user.id });
-            return res.status(403).json({ error: 'This account is not an admin' });
-        }
-
-        const token = signToken({ userId: user.id });
-        logger.info('Admin logged in to console', { userId: user.id, email: user.email });
+        // The environment credentials ARE the authorization. No users row is
+        // consulted, so the console works against a database that has never had
+        // supabase-admin-setup.sql applied. See config/consoleAdmin.ts for what
+        // that costs.
+        const user = buildConsoleAdmin(expectedEmail);
+        const token = signToken({ userId: CONSOLE_ADMIN_ID, [CONSOLE_ADMIN_CLAIM]: true });
+        logger.info('Admin logged in to console', { email: user.email });
 
         res.json({ token, user });
     } catch (error) {

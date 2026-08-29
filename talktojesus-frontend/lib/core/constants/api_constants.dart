@@ -1,6 +1,11 @@
 class ApiConstants {
-  static const String baseUrl =
-      'https://talktojesus-backend-991463842119.us-central1.run.app';
+  // Override at build/run time with:
+  //   flutter run --dart-define=API_BASE_URL=http://localhost:4040
+  // Defaults to the deployed Cloud Run backend.
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://talktojesus-backend-991463842119.us-central1.run.app',
+  );
 
   // Auth endpoints
   static const String createOrGetUser = '/api/auth/create-or-get-user';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// CupertinoPageTransitionsBuilder moved out of material.dart in Flutter 3.47.
+import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';

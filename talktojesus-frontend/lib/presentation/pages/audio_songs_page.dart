@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/song.dart';
 import '../../domain/repositories/song_repository.dart';
 import '../../data/repositories/api_song_repository.dart';
+import '../../data/repositories/mock_song_repository.dart';
 import '../widgets/song_list_item.dart';
 import '../widgets/page_header.dart';
 import '../widgets/song_list_item_shimmer.dart';
@@ -18,6 +19,7 @@ class AudioSongsPage extends ConsumerStatefulWidget {
 
 class _AudioSongsPageState extends ConsumerState<AudioSongsPage> {
   final SongRepository _songRepository = ApiSongRepository();
+  final SongRepository _bundledSongRepository = MockSongRepository();
   List<Song> _songs = [];
   bool _isLoading = true;
   String? _error;
@@ -34,7 +36,12 @@ class _AudioSongsPageState extends ConsumerState<AudioSongsPage> {
 
   Future<void> _loadSongs() async {
     try {
-      final songs = await _songRepository.getAllSongs();
+      var songs = await _songRepository.getAllSongs();
+      // Fall back to the bundled offline hymn library so the player still has
+      // something to play when the backend is unreachable or returns nothing.
+      if (songs.isEmpty) {
+        songs = await _bundledSongRepository.getAllSongs();
+      }
       if (!mounted) return;
       setState(() {
         _songs = songs;
@@ -42,12 +49,23 @@ class _AudioSongsPageState extends ConsumerState<AudioSongsPage> {
         _isLoading = false;
       });
     } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _error = 'Could not load songs. Pull down to retry.';
-        _isLoading = false;
-      });
       debugPrint('Error loading songs: $e');
+      try {
+        final songs = await _bundledSongRepository.getAllSongs();
+        if (!mounted) return;
+        setState(() {
+          _songs = songs;
+          _error = null;
+          _isLoading = false;
+        });
+      } catch (fallbackError) {
+        if (!mounted) return;
+        setState(() {
+          _error = 'Could not load songs. Pull down to retry.';
+          _isLoading = false;
+        });
+        debugPrint('Error loading bundled songs: $fallbackError');
+      }
     }
   }
 

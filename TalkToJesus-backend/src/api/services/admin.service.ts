@@ -1,6 +1,7 @@
 import { supabase } from '../../config/supabase';
 import logger from '../../utils/logger';
 import { getRazorpayKeyId } from '../../utils/razorpay';
+import { isConsoleAdminId } from '../../config/consoleAdmin';
 
 const SERVER_STARTED_AT = Date.now();
 
@@ -223,7 +224,10 @@ export const recordAuditEntry = async (params: {
 }): Promise<void> => {
     try {
         await supabase.from('admin_audit_log').insert({
-            admin_user_id: params.adminUserId,
+            // admin_user_id is a UUID FK to users. The console admin is
+            // synthetic and has no row, so it records as NULL — admin_email
+            // still identifies who acted.
+            admin_user_id: isConsoleAdminId(params.adminUserId) ? null : params.adminUserId,
             admin_email: params.adminEmail,
             action: params.action,
             target: params.target ?? null,

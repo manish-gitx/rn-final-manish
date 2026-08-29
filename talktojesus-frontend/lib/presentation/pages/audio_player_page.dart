@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/song.dart';
 import '../../domain/repositories/audio_player_repository.dart';
-import '../../data/repositories/mock_audio_player_repository.dart';
+import '../../data/repositories/audioplayers_audio_player_repository.dart';
 import '../controllers/audio_player_controller.dart';
 import '../widgets/page_header.dart';
 import '../widgets/audio_player/album_art_widget.dart';
@@ -33,13 +33,20 @@ class _AudioPlayerPageState extends ConsumerState<AudioPlayerPage> {
   @override
   void initState() {
     super.initState();
-    _audioPlayerRepository = MockAudioPlayerRepository();
+    _audioPlayerRepository = AudioPlayersAudioPlayerRepository();
     _audioPlayerController = AudioPlayerController(_audioPlayerRepository);
+    _loadAudioSource();
 
     // Track screen view
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(analyticsServiceProvider).trackScreenView('Audio Player Page');
     });
+  }
+
+  Future<void> _loadAudioSource() async {
+    final audioUrl = widget.song.audioUrl;
+    if (audioUrl == null || audioUrl.isEmpty) return;
+    await _audioPlayerController.setAudioSource(audioUrl);
   }
 
   @override
@@ -69,7 +76,7 @@ class _AudioPlayerPageState extends ConsumerState<AudioPlayerPage> {
             ElevatedButton(
               onPressed: () {
                 AccessibilityUtils.provideFeedback();
-                _audioPlayerController.setAudioSource('');
+                _loadAudioSource();
               },
               child: const Text('Retry'),
             ),

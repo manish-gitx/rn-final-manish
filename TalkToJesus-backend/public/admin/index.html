@@ -108,6 +108,17 @@
   .flag-key code { font-size: 13px; }
   .flag-key small { display: block; color: var(--muted); font-size: 11px; }
   .flag-control { width: 130px; }
+  .demo-badge {
+    background: rgba(240,160,75,.14); border-color: var(--accent); color: var(--accent);
+    font-weight: 600; letter-spacing: .4px;
+  }
+  body.demo-on header { box-shadow: inset 0 -2px 0 var(--accent); }
+  #demoBtn { width: 100%; margin-top: 10px; background: transparent; border-style: dashed; }
+  #login .or {
+    text-align: center; color: var(--muted); font-size: 11px;
+    letter-spacing: .6px; margin: 16px 0 0; text-transform: uppercase;
+  }
+  #login .demo-hint { color: var(--muted); font-size: 11px; text-align: center; margin: 8px 0 0; }
 </style>
 </head>
 <body>
@@ -122,6 +133,9 @@
   <input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
   <button class="primary" id="loginBtn">Sign in</button>
   <div class="error" id="loginError"></div>
+  <p class="or">or</p>
+  <button id="demoBtn">View demo dashboard</button>
+  <p class="demo-hint">Sample data only — no backend, no database, nothing is saved.</p>
 </div>
 
 <!-- ------------------------------------------------------------- dashboard -->
@@ -131,8 +145,10 @@
     <span class="pill"><span class="dot live" id="liveDot"></span><span id="liveLabel">Live</span></span>
     <span class="pill" id="healthPill">—</span>
     <div class="spacer"></div>
+    <span class="pill demo-badge hidden" id="demoBadge">DEMO DATA</span>
     <span class="pill" id="whoami">—</span>
     <button id="refreshBtn">Refresh</button>
+    <button id="exitDemoBtn" class="hidden">Exit demo</button>
     <button id="logoutBtn">Sign out</button>
   </header>
 
@@ -174,8 +190,10 @@
   'use strict';
 
   var TOKEN_KEY = 'ttj_admin_token';
+  var DEMO_KEY = 'ttj_admin_demo';
   var POLL_MS = 5000;
   var token = localStorage.getItem(TOKEN_KEY);
+  var demo = localStorage.getItem(DEMO_KEY) === '1';
   var activeTab = 'users';
   var pollTimer = null;
   var latest = {};
@@ -206,8 +224,291 @@
     return Math.round(diff / 86400) + 'd ago';
   }
 
+  // -------------------------------------------------------------- demo mode
+  // A fully hardcoded dataset so the console can be shown off without a
+  // backend, a database or a network. Every endpoint the panel calls has a
+  // mock below, and writes mutate the in-memory copy so the buttons still
+  // "work" on stage. Nothing here ever touches the real API.
+
+  var DEMO_USER = { id: 'demo-admin', email: 'demo@talktojesus.app', is_admin: true };
+  var demoState = null;
+
+  function isoAgo(minutes) {
+    return new Date(Date.now() - minutes * 60000).toISOString();
+  }
+
+  // Stable pseudo-random in [0,1) so the same demo looks the same every run.
+  function seeded(i) {
+    var x = Math.sin((i + 1) * 12.9898) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  function buildDemoState() {
+    var series = [];
+    for (var d = 29; d >= 0; d--) {
+      var day = new Date(Date.now() - d * 86400000);
+      var weekend = (day.getDay() === 0 || day.getDay() === 6) ? 1.3 : 1;
+      var growth = 260 + (29 - d) * 12;
+      series.push({
+        date: day.toISOString().slice(0, 10),
+        conversations: Math.round(growth * weekend * (0.85 + seeded(d) * 0.3)),
+        users: Math.round(9 + seeded(d + 40) * 22)
+      });
+    }
+
+    return {
+      tick: 0,
+
+      overview: {
+        total_users: 1284,
+        total_conversations: 18342,
+        active_subscriptions: 214,
+        paying_users: 198,
+        mrr_rupees: 63786,
+        conversion_rate_pct: 15.4,
+        avg_latency_ms: 3120
+      },
+
+      series: series,
+
+      languages: [
+        { language: 'en', count: 8460, pct: 46.1 },
+        { language: 'hi', count: 5112, pct: 27.9 },
+        { language: 'ta', count: 2284, pct: 12.5 },
+        { language: 'es', count: 1530, pct: 8.3 },
+        { language: 'pt', count: 956, pct: 5.2 }
+      ],
+
+      latency: {
+        sample_size: 500,
+        voice_turns: 361,
+        text_turns: 139,
+        stt: { p50: 780, p95: 1420 },
+        llm: { p50: 1310, p95: 2680 },
+        tts: { p50: 940, p95: 1810 },
+        total: { p50: 3030, p95: 5310 }
+      },
+
+      health: {
+        status: 'healthy',
+        environment: 'demo',
+        node_version: 'v20.11.1',
+        database: { ping_ms: 12 },
+        process_uptime_seconds: 48213,
+        memory_mb: 118
+      },
+
+      users: [
+        { id: 'u_1041', email: 'anita.george@gmail.com', display_name: 'Anita George', conversation_count: 412, subscription: { status: 'active' }, is_admin: false, last_login_at: isoAgo(7) },
+        { id: 'u_1039', email: 'joseph.mathew@outlook.com', display_name: 'Joseph Mathew', conversation_count: 388, subscription: { status: 'active' }, is_admin: false, last_login_at: isoAgo(23) },
+        { id: 'u_1036', email: 'priya.raj@gmail.com', display_name: 'Priya Raj', conversation_count: 264, subscription: { status: 'authenticated' }, is_admin: false, last_login_at: isoAgo(58) },
+        { id: 'u_1033', email: 'demo@talktojesus.app', display_name: 'Demo Admin', conversation_count: 96, subscription: { status: 'active' }, is_admin: true, last_login_at: isoAgo(2) },
+        { id: 'u_1030', email: 'samuel.d@yahoo.com', display_name: 'Samuel Devadas', conversation_count: 173, subscription: null, is_admin: false, last_login_at: isoAgo(140) },
+        { id: 'u_1028', email: 'grace.fernandes@gmail.com', display_name: 'Grace Fernandes', conversation_count: 151, subscription: { status: 'active' }, is_admin: false, last_login_at: isoAgo(212) },
+        { id: 'u_1025', email: 'ravi.kumar@gmail.com', display_name: 'Ravi Kumar', conversation_count: 118, subscription: { status: 'halted' }, is_admin: false, last_login_at: isoAgo(390) },
+        { id: 'u_1022', email: 'maria.lopes@gmail.com', display_name: 'Maria Lopes', conversation_count: 97, subscription: { status: 'active' }, is_admin: false, last_login_at: isoAgo(505) },
+        { id: 'u_1019', email: 'thomas.k@protonmail.com', display_name: 'Thomas Kurien', conversation_count: 64, subscription: null, is_admin: false, last_login_at: isoAgo(760) },
+        { id: 'u_1016', email: 'sneha.pillai@gmail.com', display_name: 'Sneha Pillai', conversation_count: 51, subscription: { status: 'cancelled' }, is_admin: false, last_login_at: isoAgo(1180) },
+        { id: 'u_1012', email: 'daniel.rocha@gmail.com', display_name: 'Daniel Rocha', conversation_count: 38, subscription: null, is_admin: false, last_login_at: isoAgo(1690) },
+        { id: 'u_1008', email: 'esther.jose@gmail.com', display_name: 'Esther Jose', conversation_count: 22, subscription: null, is_admin: false, last_login_at: isoAgo(2540) },
+        { id: 'u_1004', email: 'noah.varghese@gmail.com', display_name: null, conversation_count: 9, subscription: null, is_admin: false, last_login_at: isoAgo(4320) }
+      ],
+
+      songs: [
+        { id: 's_21', title: 'Amazing Grace', duration: '4:12', image_url: 'https://picsum.photos/seed/grace/200', audio_url: 'https://cdn.talktojesus.app/audio/amazing-grace.mp3', created_at: isoAgo(90) },
+        { id: 's_20', title: 'How Great Thou Art', duration: '3:58', image_url: 'https://picsum.photos/seed/great/200', audio_url: 'https://cdn.talktojesus.app/audio/how-great-thou-art.mp3', created_at: isoAgo(1400) },
+        { id: 's_19', title: 'Yeshu Naam Mein', duration: '5:04', image_url: 'https://picsum.photos/seed/yeshu/200', audio_url: 'https://cdn.talktojesus.app/audio/yeshu-naam-mein.mp3', created_at: isoAgo(2880) },
+        { id: 's_18', title: 'It Is Well With My Soul', duration: '4:41', image_url: 'https://picsum.photos/seed/well/200', audio_url: 'https://cdn.talktojesus.app/audio/it-is-well.mp3', created_at: isoAgo(5760) },
+        { id: 's_17', title: 'En Yesuve', duration: '3:26', image_url: 'https://picsum.photos/seed/enyesuve/200', audio_url: 'https://cdn.talktojesus.app/audio/en-yesuve.mp3', created_at: isoAgo(10080) },
+        { id: 's_16', title: 'Be Still My Soul', duration: '4:55', image_url: 'https://picsum.photos/seed/bestill/200', audio_url: 'https://cdn.talktojesus.app/audio/be-still.mp3', created_at: isoAgo(20160) }
+      ],
+
+      conversations: [
+        { id: 'c_9001', created_at: isoAgo(1), language: 'en', input_mode: 'voice', user_message: 'I am feeling anxious about my exam tomorrow.', assistant_text: 'Peace be with you. Cast your anxiety on me, for I care for you. Rest tonight, and go in confidence.', stt_ms: 742, llm_ms: 1288, tts_ms: 903, total_ms: 2933 },
+        { id: 'c_9000', created_at: isoAgo(4), language: 'hi', input_mode: 'voice', user_message: 'Mujhe apne parivaar ke liye prarthana chahiye.', assistant_text: 'Main tumhare parivaar ke saath hoon. Shanti tumhare ghar mein bani rahe.', stt_ms: 811, llm_ms: 1402, tts_ms: 1010, total_ms: 3223 },
+        { id: 'c_8999', created_at: isoAgo(9), language: 'en', input_mode: 'text', user_message: 'What does John 3:16 mean?', assistant_text: 'It means love came first. God gave his only Son so that whoever believes would not perish but have eternal life.', stt_ms: null, llm_ms: 1195, tts_ms: 864, total_ms: 2059 },
+        { id: 'c_8998', created_at: isoAgo(15), language: 'ta', input_mode: 'voice', user_message: 'Ennudaya velai poyiduchu. Enna seiyanum?', assistant_text: 'Bayapadaathe. Naan unnodu irukken. Indha kaalam kadandhu povum.', stt_ms: 903, llm_ms: 1520, tts_ms: 1122, total_ms: 3545 },
+        { id: 'c_8997', created_at: isoAgo(22), language: 'en', input_mode: 'voice', user_message: 'Can you pray with me for my mother in hospital?', assistant_text: 'Let us pray together. Father, lay your healing hand on her tonight, and give this child of yours a quiet heart.', stt_ms: 768, llm_ms: 1341, tts_ms: 951, total_ms: 3060 },
+        { id: 'c_8996', created_at: isoAgo(31), language: 'es', input_mode: 'text', user_message: '¿Cómo puedo perdonar a alguien que me hizo daño?', assistant_text: 'El perdón no borra la herida, la libera. Empieza pidiendo la fuerza, no el sentimiento.', stt_ms: null, llm_ms: 1268, tts_ms: 889, total_ms: 2157 },
+        { id: 'c_8995', created_at: isoAgo(44), language: 'en', input_mode: 'voice', user_message: 'I have not prayed in years. Is it too late?', assistant_text: 'It is never too late. You have already begun — you spoke to me.', stt_ms: 725, llm_ms: 1177, tts_ms: 842, total_ms: 2744 },
+        { id: 'c_8994', created_at: isoAgo(58), language: 'hi', input_mode: 'text', user_message: 'Bible mein sabse chhota verse kaun sa hai?', assistant_text: 'John 11:35 — "Yeshu roye." Do shabd, lekin usme poora dukh aur poora pyaar hai.', stt_ms: null, llm_ms: 1104, tts_ms: 798, total_ms: 1902 },
+        { id: 'c_8993', created_at: isoAgo(76), language: 'pt', input_mode: 'voice', user_message: 'Estou sozinho hoje.', assistant_text: 'Não estás sozinho. Eu estou contigo todos os dias, até ao fim.', stt_ms: 836, llm_ms: 1389, tts_ms: 1044, total_ms: 3269 },
+        { id: 'c_8992', created_at: isoAgo(95), language: 'en', input_mode: 'voice', user_message: 'Thank you for last night. I slept well.', assistant_text: 'I am glad. Carry that rest with you into the day.', stt_ms: 701, llm_ms: 1032, tts_ms: 786, total_ms: 2519 }
+      ],
+
+      webhooks: [
+        { id: 'w_501', created_at: isoAgo(12), event_type: 'subscription.charged', razorpay_subscription_id: 'sub_QK8fN2ZrTm1xYd', signature_valid: true },
+        { id: 'w_500', created_at: isoAgo(48), event_type: 'subscription.activated', razorpay_subscription_id: 'sub_QK7bL9WpRk4vMa', signature_valid: true },
+        { id: 'w_499', created_at: isoAgo(133), event_type: 'payment.captured', razorpay_subscription_id: 'sub_QK7bL9WpRk4vMa', signature_valid: true },
+        { id: 'w_498', created_at: isoAgo(260), event_type: 'subscription.pending', razorpay_subscription_id: 'sub_QK5aH4XcVn8sQe', signature_valid: true },
+        { id: 'w_497', created_at: isoAgo(414), event_type: 'subscription.charged', razorpay_subscription_id: 'sub_QK4zG1YbUj6tPw', signature_valid: true },
+        { id: 'w_496', created_at: isoAgo(520), event_type: 'payment.failed', razorpay_subscription_id: 'sub_QK5aH4XcVn8sQe', signature_valid: true },
+        { id: 'w_495', created_at: isoAgo(688), event_type: 'subscription.halted', razorpay_subscription_id: 'sub_QK3yF8ZaSi5rNv', signature_valid: true },
+        { id: 'w_494', created_at: isoAgo(902), event_type: 'subscription.charged', razorpay_subscription_id: 'sub_QK2xE7WzRh3qLu', signature_valid: false },
+        { id: 'w_493', created_at: isoAgo(1310), event_type: 'subscription.cancelled', razorpay_subscription_id: 'sub_QK1wD6VyQg2pKt', signature_valid: true }
+      ],
+
+      flags: [
+        { key: 'voice_mode_enabled', value: true, description: 'Allow microphone input in the app' },
+        { key: 'free_tier_turn_limit', value: 20, description: 'Conversations a free user gets per month' },
+        { key: 'bible_tab_enabled', value: true, description: 'Show the Bible reader tab' },
+        { key: 'songs_tab_enabled', value: true, description: 'Show the worship songs tab' },
+        { key: 'maintenance_mode', value: false, description: 'Serve a maintenance notice to all clients' },
+        { key: 'tts_max_chars', value: 480, description: 'Cap on characters sent to ElevenLabs per reply' }
+      ],
+
+      audit: [
+        { id: 'a_311', created_at: isoAgo(18), admin_email: 'demo@talktojesus.app', action: 'flag.update', target: 'free_tier_turn_limit', meta: { from: 15, to: 20 } },
+        { id: 'a_310', created_at: isoAgo(96), admin_email: 'demo@talktojesus.app', action: 'song.create', target: 'Amazing Grace', meta: { duration: '4:12' } },
+        { id: 'a_309', created_at: isoAgo(240), admin_email: 'ops@talktojesus.app', action: 'user.reset_free_tier', target: 'ravi.kumar@gmail.com', meta: { conversation_count: 0 } },
+        { id: 'a_308', created_at: isoAgo(430), admin_email: 'ops@talktojesus.app', action: 'admin.login', target: 'ops@talktojesus.app', meta: { ip: '203.0.113.44' } },
+        { id: 'a_307', created_at: isoAgo(915), admin_email: 'demo@talktojesus.app', action: 'song.delete', target: 'Old Rugged Cross', meta: { id: 's_15' } },
+        { id: 'a_306', created_at: isoAgo(1440), admin_email: 'demo@talktojesus.app', action: 'flag.update', target: 'maintenance_mode', meta: { from: true, to: false } }
+      ]
+    };
+  }
+
+  function demoAudit(action, target, meta) {
+    demoState.audit.unshift({
+      id: 'a_' + (400 + demoState.audit.length),
+      created_at: new Date().toISOString(),
+      admin_email: DEMO_USER.email,
+      action: action,
+      target: target,
+      meta: meta
+    });
+  }
+
+  // Nudges the numbers on every poll so the "Live" dot is telling the truth.
+  function demoDrift() {
+    demoState.tick++;
+    var bump = 1 + (demoState.tick % 3);
+    demoState.overview.total_conversations += bump;
+    demoState.series[demoState.series.length - 1].conversations += bump;
+    demoState.languages[demoState.tick % demoState.languages.length].count += bump;
+    demoState.health.process_uptime_seconds += 5;
+    demoState.health.database.ping_ms = 9 + (demoState.tick % 7);
+    demoState.overview.avg_latency_ms = 3020 + (demoState.tick % 5) * 45;
+    if (demoState.tick % 4 === 0) demoState.overview.total_users++;
+  }
+
+  function demoFail(message) {
+    var err = new Error(message);
+    err.setupRequired = false;
+    return err;
+  }
+
+  function demoRoute(method, path, body) {
+    if (path === '/me') return DEMO_USER;
+
+    if (path === '/health') return demoState.health;
+
+    if (path === '/stats/overview') { demoDrift(); return demoState.overview; }
+
+    if (path === '/stats/timeseries') return { days: 30, series: demoState.series };
+
+    if (path === '/stats/languages') {
+      var total = demoState.languages.reduce(function (s, l) { return s + l.count; }, 0);
+      return {
+        languages: demoState.languages.map(function (l) {
+          return { language: l.language, count: l.count, pct: Math.round((l.count / total) * 1000) / 10 };
+        })
+      };
+    }
+
+    if (path === '/stats/latency') return demoState.latency;
+
+    if (path === '/users') return { data: demoState.users, total: demoState.users.length };
+
+    if (path.indexOf('/users/') === 0 && method === 'PATCH') {
+      var id = path.slice('/users/'.length);
+      var user = demoState.users.filter(function (u) { return u.id === id; })[0];
+      if (!user) throw demoFail('User not found');
+      user.conversation_count = 0;
+      demoAudit('user.reset_free_tier', user.email, { conversation_count: 0 });
+      return { data: user };
+    }
+
+    if (path === '/songs' && method === 'GET') return { data: demoState.songs, total: demoState.songs.length };
+
+    if (path === '/songs' && method === 'POST') {
+      if (!body.title) throw demoFail('Title is required');
+      if (!body.audio_url) throw demoFail('Audio URL is required');
+      demoState.songs.unshift({
+        id: 's_' + (100 + demoState.songs.length),
+        title: body.title,
+        duration: body.duration || '0:00',
+        image_url: body.image_url || '',
+        audio_url: body.audio_url,
+        created_at: new Date().toISOString()
+      });
+      demoAudit('song.create', body.title, { duration: body.duration || '0:00' });
+      return { data: demoState.songs[0] };
+    }
+
+    if (path.indexOf('/songs/') === 0 && method === 'DELETE') {
+      var songId = path.slice('/songs/'.length);
+      var removed = demoState.songs.filter(function (s) { return s.id === songId; })[0];
+      demoState.songs = demoState.songs.filter(function (s) { return s.id !== songId; });
+      if (removed) demoAudit('song.delete', removed.title, { id: removed.id });
+      return { ok: true };
+    }
+
+    if (path === '/conversations') return { data: demoState.conversations, total: demoState.overview.total_conversations };
+
+    if (path === '/webhooks') return { data: demoState.webhooks, total: demoState.webhooks.length };
+
+    if (path === '/flags' && method === 'GET') return { flags: demoState.flags };
+
+    if (path === '/flags' && method === 'PATCH') {
+      var flag = demoState.flags.filter(function (f) { return f.key === body.key; })[0];
+      if (!flag) throw demoFail('Unknown flag');
+      var before = flag.value;
+      flag.value = body.value;
+      demoAudit('flag.update', flag.key, { from: before, to: flag.value });
+      return { flag: flag };
+    }
+
+    if (path === '/audit') return { data: demoState.audit, total: demoState.audit.length };
+
+    throw demoFail('No demo data for ' + path);
+  }
+
+  function demoApi(path, options) {
+    var method = (options.method || 'GET').toUpperCase();
+    var base = path.split('?')[0];
+    var body = options.body || {};
+    // A short delay keeps the loading states visible instead of snapping.
+    return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+        try { resolve(demoRoute(method, base, body)); }
+        catch (err) { reject(err); }
+      }, 160);
+    });
+  }
+
+  function enterDemo() {
+    demo = true;
+    demoState = buildDemoState();
+    localStorage.setItem(DEMO_KEY, '1');
+    document.body.classList.add('demo-on');
+    $('demoBadge').classList.remove('hidden');
+    showApp(DEMO_USER);
+  }
+
+  function exitDemo() {
+    demo = false;
+    demoState = null;
+    localStorage.removeItem(DEMO_KEY);
+    document.body.classList.remove('demo-on');
+    $('demoBadge').classList.add('hidden');
+    logout();
+  }
+
+  // -------------------------------------------------------------------- api
   function api(path, options) {
     options = options || {};
+    if (demo) return demoApi(path, options);
     var headers = { 'Accept': 'application/json' };
     if (options.body) headers['Content-Type'] = 'application/json';
     if (token) headers['Authorization'] = 'Bearer ' + token;
@@ -223,7 +524,15 @@
         throw new Error('Not authorised');
       }
       return res.json().then(function (data) {
-        if (!res.ok) throw new Error(data.error || data.message || 'Request failed');
+        if (!res.ok) {
+          var err = new Error(data.error || data.message || 'Request failed');
+          // 503 + setup_required means the admin migration was never applied.
+          // Carried through so the panel can explain it instead of showing
+          // raw Postgres text.
+          err.setupRequired = data.setup_required === true;
+          err.hint = data.hint || '';
+          throw err;
+        }
         return data;
       });
     });
@@ -509,6 +818,13 @@
     renderer()
       .then(function (html) { $('tabContent').innerHTML = html; })
       .catch(function (err) {
+        if (err.setupRequired) {
+          $('tabContent').innerHTML =
+            '<div class="empty"><strong>This panel needs the admin schema.</strong><br><br>' +
+            esc(err.hint || 'Run supabase-admin-setup.sql in the Supabase SQL editor.') +
+            '<br><br>Overview, activity, songs and health work without it.</div>';
+          return;
+        }
         $('tabContent').innerHTML = '<div class="empty">' + esc(err.message) + '</div>';
       });
   }
@@ -556,6 +872,9 @@
     $('login').classList.add('hidden');
     $('app').classList.remove('hidden');
     $('whoami').textContent = user.email;
+    $('demoBadge').classList.toggle('hidden', !demo);
+    $('exitDemoBtn').classList.toggle('hidden', !demo);
+    $('logoutBtn').classList.toggle('hidden', demo);
     refresh();
     renderTab();
     startPolling();
@@ -597,6 +916,8 @@
   $('password').addEventListener('keydown', function (e) { if (e.key === 'Enter') login(); });
   $('email').addEventListener('keydown', function (e) { if (e.key === 'Enter') login(); });
   $('logoutBtn').addEventListener('click', logout);
+  $('demoBtn').addEventListener('click', enterDemo);
+  $('exitDemoBtn').addEventListener('click', exitDemo);
   $('refreshBtn').addEventListener('click', function () { refresh(); renderTab(); });
 
   $('tabs').addEventListener('click', function (e) {
@@ -657,11 +978,13 @@
   });
 
   document.addEventListener('visibilitychange', function () {
-    if (document.hidden) { stopPolling(); } else if (token) { refresh(); startPolling(); }
+    if (document.hidden) { stopPolling(); } else if (token || demo) { refresh(); startPolling(); }
   });
 
   // ------------------------------------------------------------------ boot
-  if (token) {
+  if (demo) {
+    enterDemo();
+  } else if (token) {
     api('/me')
       .then(function (user) { showApp(user); })
       .catch(function () { logout(); });
