@@ -487,12 +487,12 @@ Capstone submission documents live in [`deliverables/`](deliverables/), with
 
 | Document | Pages | Contents |
 |---|---|---|
-| `01-Final-Project-Report` | 103 | Full report — architecture, implementation, testing, results, limitations |
-| `02-Project-Summary` | 8 | Pre-viva overview including the Unique Value Proposition |
+| `01-Final-Project-Report` | 100 | Full report — architecture, implementation, testing, results, limitations |
+| `02-Project-Summary` | 4 | Pre-viva overview including the Unique Value Proposition |
 | `05-Test-and-Validation-Report` | 39 | Test plan, all 141 automated cases, on-device verification, measured results |
-| `06-Plagiarism-Compliance` | 11 | Originality declaration, code provenance, licensing |
-| `07-User-Manual` | 12 | End-user guide with screenshots |
-| `08-Installation-Guide` | 12 | Setup, environment variables, deployment, troubleshooting |
+| `06-Plagiarism-Compliance` | 7 | Originality declaration, code provenance, licensing |
+| `07-User-Manual` | 9 | End-user guide with screenshots |
+| `08-Installation-Guide` | 6 | Setup, environment variables, deployment, troubleshooting |
 | `09-TalkToJesus-Capstone-Final.pptx` | 10 slides | Presentation in the BITS template, with speaker notes |
 
 Supporting material: [`docs/figures/`](docs/figures/) holds 29 figures with an index and a

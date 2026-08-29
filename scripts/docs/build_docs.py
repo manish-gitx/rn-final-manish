@@ -37,6 +37,7 @@ REPORT_PARTS = [
 
 # Deliverables that are a single source file rather than an assembled set.
 STANDALONE = [
+    ("00-links.md", "00-Submission-Links.docx"),
     ("02-summary.md", "02-Project-Summary.docx"),
     ("05-test-report.md", "05-Test-and-Validation-Report.docx"),
     ("06-plagiarism.md", "06-Plagiarism-Compliance.docx"),
