@@ -21,9 +21,11 @@
 
 Watch the **Talk to Jesus** app in action:
 
-[![Demo Video](https://img.shields.io/badge/▶️_Watch_Demo-Google_Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1zEaOE2A78sAy2iPQp8LM1efWzoOa5GCm/view?usp=sharing)
+[![Demo Video](https://img.shields.io/badge/▶️_Watch_Demo-Google_Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/124faeA_zm2HM7rPP_rWwJPsXSj6iN4QS/view)
 
-**[📺 Click here to watch the full demo video →](https://drive.google.com/file/d/1zEaOE2A78sAy2iPQp8LM1efWzoOa5GCm/view?usp=sharing)**
+**[📺 Application demo (3:50) →](https://drive.google.com/file/d/124faeA_zm2HM7rPP_rWwJPsXSj6iN4QS/view)** · **[📊 Admin console (1:13) →](https://drive.google.com/file/d/1UeTyKBB8uDYdNhWjS14s2lbwYxO7xW6p/view)**
+
+_These supersede the earlier recording cited in the Phase 2 and Phase 3 documents. Per-section timestamps are in `links.md`._
 
 The video demonstrates:
 - 📱 Complete user experience across all features
@@ -199,7 +201,7 @@ If basic Bible apps can reach millions, an **intelligent, conversational spiritu
 Before you begin, ensure you have the following installed:
 - **Node.js** (v18 or higher)
 - **npm** or **yarn**
-- **Flutter SDK** (v3.0 or higher)
+- **Flutter SDK** 3.38.6 stable (the version CI pins; 3.32.7 has also been used locally)
 - **Android Studio** (for Android development)
 - **Xcode** (for iOS development, macOS only)
 - **Git**
@@ -220,7 +222,7 @@ Before you begin, ensure you have the following installed:
    Create a `.env` file in the backend root with the following variables:
    ```env
    # Server Configuration
-   PORT=3000
+   PORT=4040
    NODE_ENV=development
 
    # Supabase Configuration
@@ -273,7 +275,7 @@ Before you begin, ensure you have the following installed:
    ```bash
    npm run dev
    ```
-   The backend will run on `http://localhost:3000`
+   The backend will run on `http://localhost:4040` (the code default; the container listens on 8080)
 
 6. **For production build**:
    ```bash
@@ -341,9 +343,9 @@ Before you begin, ensure you have the following installed:
 |----------|-------------|----------|
 | `PORT` | Server port number | Yes |
 | `SUPABASE_URL` | Supabase project URL | Yes |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | Yes |
+| `SUPABASE_KEY` | Supabase service-tier key (the code reads `SUPABASE_KEY`, not `SUPABASE_SERVICE_ROLE_KEY`) | Yes |
 | `JWT_SECRET` | Secret key for JWT signing | Yes |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID | Yes |
+| `GOOGLE_CLIENT_ID_WEB` / `_IOS` / `_ANDROID` | Google OAuth client IDs — three separate variables, at least one required | Yes |
 | `OPENAI_API_KEY` | OpenAI API key for conversations | Yes |
 | `ELEVENLABS_API_KEY` | ElevenLabs API key for TTS | Yes |
 | `RAZORPAY_KEY_ID` | Razorpay key ID | Yes |
@@ -359,7 +361,7 @@ Before you begin, ensure you have the following installed:
 
 ### Testing the Application
 
-1. **Start the backend server** (ensure it's running on `http://localhost:3000`)
+1. **Start the backend server** (ensure it's running on `http://localhost:4040`)
 
 2. **Launch the mobile app** on an emulator or physical device
 
@@ -420,7 +422,7 @@ All authenticated endpoints require a JWT token in the Authorization header:
 Authorization: Bearer <jwt_token>
 ```
 
-Base URL (local): `http://localhost:3000/api`
+Base URL (local): `http://localhost:4040/api`
 
 ---
 
