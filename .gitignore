@@ -33,10 +33,15 @@ Temporary Items
 *.log
 logs/
 
-# Environment variables
+# Environment variables (all types)
 .env
-.env.local
-.env.*.local
+.env.*
+*.env
+*.env.*
+.envrc
+!.env.example
+!.env.sample
+!.env.template
 
 # OS generated files
 Thumbs.db
