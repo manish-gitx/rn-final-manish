@@ -127,15 +127,3 @@ Album artwork is twelve public-domain paintings from the Metropolitan Museum of 
 ## 5. Use of AI tools
 
 AI coding assistance was used during development and during the preparation of these documents, in line with normal contemporary practice. All architectural decisions, all trade-offs, the measurement methodology and the conclusions drawn from it are the candidate's own. Every factual claim in the report was checked against the codebase, the captured test output or the recorded measurements before being written; the corrections in Sections 1.6 and 3.6 are the result of that checking.
-
-## 6. Pre-submission checklist
-
-Before the code archive is uploaded:
-
-- [ ] Delete `TalkToJesus-backend/.env.bak.*` — three environment backup files that are **not** covered by the `.gitignore` patterns
-- [ ] Confirm `TalkToJesus-backend/.env` is excluded from the archive
-- [ ] Remove the long-lived test token from `talktojesus-frontend/lib/core/constants/tester_constants.dart` and rotate it
-- [ ] Rotate the PostHog key and Sentry DSN, which are committed in `lib/main.dart`, `environment_config.dart`, `AndroidManifest.xml` and `Info.plist`
-- [ ] Remove `talktojesus-frontend/.env.dev` and `.env.prod` from source control
-- [ ] Run the institutional similarity check and complete Section 2 above
-- [ ] Obtain the supervisor's signature on the report and on this declaration

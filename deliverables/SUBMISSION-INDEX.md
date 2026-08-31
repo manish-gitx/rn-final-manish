@@ -47,6 +47,9 @@ The checklist asks that items **2, 3, 4, 10, 11 and 12** be kept in Drive as pub
 - [x] **Plagiarism declaration counter-signed** by the supervisor (`06`, Section 1 — Swapnil Saurav, 25 August 2026).
 - [ ] **Read `SECURITY-NOTE.txt` inside the code archive.** It records what was excluded and which three credentials were redacted from source. Rotate all three — the tester JWT, the PostHog key and the Sentry DSN — since they were previously public on GitHub.
 - [ ] **Delete the three `TalkToJesus-backend/.env.bak.*` files** from your working copy. They are not covered by `.gitignore`; the archive excludes them, but they are still on your disk.
+- [ ] **Remove the hardcoded tester JWT** from `talktojesus-frontend/lib/core/constants/tester_constants.dart` (still present at line 6) and rotate it.
+- [ ] **Untrack `talktojesus-frontend/.env.dev` and `.env.prod`.** Both are still listed by `git ls-files`.
+- [ ] **Run the institutional similarity check**, then complete Section 2 of the plagiarism declaration and Appendix E.7 of the report (score, tool, date — report p. 100).
 
 ## On checklist item 11 — marketing videos
 
