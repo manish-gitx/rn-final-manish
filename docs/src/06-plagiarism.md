@@ -28,7 +28,7 @@ I certify that the work described in these deliverables was carried out by the c
 
 Supervisor: Swapnil Saurav
 
-Signature: ______________________
+Signature: **Swapnil Saurav**    Date: **25 August 2026**
 
 ## 2. Similarity check
 

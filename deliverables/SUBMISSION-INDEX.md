@@ -26,12 +26,12 @@ deliverables/
 | # | Checklist item | Deliverable | Status | Drive link |
 |---|---|---|---|---|
 | — | Deliverable links (all Drive URLs) | `docx/00-Submission-Links.docx` · `pdf/…pdf` (3 pp) | Ready | — |
-| 1 | Project report, signed by supervisor | `docx/01-Final-Project-Report.docx` · `pdf/…pdf` (100 pp) | Ready — **needs signature** | [link](https://docs.google.com/document/d/1uCFz1Chtd9vzwkvGwsplmHHwrbxqLN3k/edit) |
+| 1 | Project report, signed by supervisor | `docx/01-Final-Project-Report.docx` · `pdf/…pdf` (100 pp) | Ready — signed by supervisor | [link](https://docs.google.com/document/d/1uCFz1Chtd9vzwkvGwsplmHHwrbxqLN3k/edit) |
 | 2 | Summary with UVP, uploaded to shared drive | `docx/02-Project-Summary.docx` · `pdf/…pdf` (4 pp) | Ready | [link](https://docs.google.com/document/d/1s7br0X-u1Ksc8FhIhuS114E3YNm4lAAv/edit) |
 | 3 | Code submission (zip) | `other/03-TalkToJesus-Source-Code.zip` (376 files, 27 MB) | Ready — credentials removed | [link](https://drive.google.com/file/d/1ehlq9yxDoNkYJL7n24sopvyqKKMbkrek/view) |
 | 4 | Source code link (GitHub) in a `.txt` | `other/04-Source-Code-Link.txt` | Ready | [link](https://drive.google.com/file/d/1ZcYxWUTJhNPi-3IOER5B1z3ca-8R5FoK/view) |
 | 5 | Test cases and validation report | `docx/05-Test-and-Validation-Report.docx` · `pdf/…pdf` (39 pp), and Chapter 3 of the report | Ready | [link](https://docs.google.com/document/d/1Cr-vOzUkfcI7V45BX04mcJ4pwN1Bj3SO/edit) |
-| 6 | Plagiarism compliance | `docx/06-Plagiarism-Compliance.docx` · `pdf/…pdf` (7 pp) | Ready — **needs supervisor signature** | [link](https://docs.google.com/document/d/1r2iAIvEip4R7886QfPbM5USZbxt75YUw/edit) |
+| 6 | Plagiarism compliance | `docx/06-Plagiarism-Compliance.docx` · `pdf/…pdf` (7 pp) | Ready — counter-signed by supervisor | [link](https://docs.google.com/document/d/1r2iAIvEip4R7886QfPbM5USZbxt75YUw/edit) |
 | 7 | User manual | `docx/07-User-Manual.docx` · `pdf/…pdf` (9 pp), and Appendix A | Ready | [link](https://docs.google.com/document/d/1IK2LYor9gF934Lim7IuQ-PhOYIxFRxZl/edit) |
 | 8 | Installation guide | `docx/08-Installation-Guide.docx` · `pdf/…pdf` (6 pp), and Appendix B | Ready | [link](https://docs.google.com/document/d/16KTNFEPPu2uhgDu3BRNy9aZH7bbJ-1Bx/edit) |
 | 9 | Final presentation, BITS template | `ppt/09-TalkToJesus-Capstone-Final.pptx` · `pdf/…pdf` (10 slides) | Ready | [link](https://docs.google.com/presentation/d/1_o2Mn7ObgyNLpoNfyrxY4Plo6VTqIEqR/edit) |
@@ -43,8 +43,8 @@ The checklist asks that items **2, 3, 4, 10, 11 and 12** be kept in Drive as pub
 
 ## Before you submit
 
-- [ ] **Sign the report.** `docx/01-Final-Project-Report.docx` — the certificate page after the cover. The viva will not be conducted without the supervisor's signature.
-- [ ] **Get the plagiarism declaration counter-signed** by your supervisor (`06`, Section 1).
+- [x] **Report signed.** `docx/01-Final-Project-Report.docx` — the certificate page after the cover carries the supervisor's signature (Swapnil Saurav, 25 August 2026). The viva will not be conducted without it.
+- [x] **Plagiarism declaration counter-signed** by the supervisor (`06`, Section 1 — Swapnil Saurav, 25 August 2026).
 - [ ] **Read `SECURITY-NOTE.txt` inside the code archive.** It records what was excluded and which three credentials were redacted from source. Rotate all three — the tester JWT, the PostHog key and the Sentry DSN — since they were previously public on GitHub.
 - [ ] **Delete the three `TalkToJesus-backend/.env.bak.*` files** from your working copy. They are not covered by `.gitignore`; the archive excludes them, but they are still on your disk.
 
